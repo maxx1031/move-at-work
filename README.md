@@ -1,6 +1,13 @@
-# Move at Work
+# Just Standup (Move at Work)
 
 A workplace movement demo: turn a familiar office into a personalized five-minute workout route.
+
+## Current design and technical plan
+
+- [Technical design (中文)](docs/TECHNICAL_DESIGN.md): reconstruction, neon rendering, motion demonstrations, data contracts, and demo milestones.
+- [Latest approved UI — 01_UI.html](docs/reference/01_UI.html): download the HTML file and open it in a browser to view the five-screen design. GitHub displays source rather than running the HTML.
+
+The SVG screens below are earlier drafts; the linked HTML is the current UI reference.
 
 ## User journey
 
