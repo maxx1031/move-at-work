@@ -1,28 +1,10 @@
 // UI 05 · Done for today, Duolingo-style: celebration (confetti, mascot, counting stat tiles) → streak → summary.
 // The two steps are local to this screen; only "Back to my space" goes through the store.
 import { clock12, esc, icon, mmss } from "../ui.js";
+import { mascot } from "../mascot.js";
 
 const XP_PER_MIN = 10;
 const DAYS = ["M", "T", "W", "T", "F", "S", "S"];
-
-const mascot = `<svg class="mascot" viewBox="0 0 160 170" aria-hidden="true">
-  <ellipse class="m-shadow" cx="80" cy="162" rx="38" ry="6" fill="rgba(198,255,61,.25)"/>
-  <g class="m-body">
-    <path class="m-arm l" d="M44 86 L18 46" stroke="#C6FF3D" stroke-width="12" stroke-linecap="round"/>
-    <path class="m-arm r" d="M116 86 L142 46" stroke="#C6FF3D" stroke-width="12" stroke-linecap="round"/>
-    <path d="M60 140 v14 M100 140 v14" stroke="#9BD12A" stroke-width="12" stroke-linecap="round"/>
-    <rect x="34" y="40" width="92" height="106" rx="46" fill="#C6FF3D"/>
-    <rect x="34" y="40" width="92" height="106" rx="46" fill="url(#mshine)"/>
-    <g class="m-eyes">
-      <ellipse cx="64" cy="84" rx="9" ry="11" fill="#0B0F0E"/><ellipse cx="96" cy="84" rx="9" ry="11" fill="#0B0F0E"/>
-      <circle cx="67" cy="80" r="3.2" fill="#fff"/><circle cx="99" cy="80" r="3.2" fill="#fff"/>
-    </g>
-    <path d="M64 106 q16 16 32 0" fill="#0B0F0E"/>
-    <path d="M70 110 q10 6 20 0" fill="#FF6B6B"/>
-    <ellipse cx="50" cy="102" rx="7" ry="4" fill="rgba(255,120,120,.45)"/><ellipse cx="110" cy="102" rx="7" ry="4" fill="rgba(255,120,120,.45)"/>
-  </g>
-  <defs><radialGradient id="mshine" cx=".35" cy=".25" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
-</svg>`;
 
 const flame = `<svg class="flame" viewBox="0 0 120 150" aria-hidden="true">
   <path d="M60 6 C72 34 104 52 104 94 C104 126 84 146 60 146 C36 146 16 126 16 94 C16 70 30 56 38 40 C42 58 50 64 56 66 C52 44 54 24 60 6Z" fill="#FF9F1C"/>
@@ -53,7 +35,7 @@ export default {
   <canvas class="confetti" data-confetti></canvas>
 
   <section class="step win">
-    <div class="mascot-wrap">${mascot}<div class="burst"></div></div>
+    <div class="mascot-wrap"><div class="burst"></div>${mascot({ pose: "flex", anim: true })}</div>
     <h1 class="h1 pop" style="font-size:44px">Workout<br><em>complete!</em></h1>
     <p class="lead pop d1">${v.total} spots lit · ${Math.round(v.totalSec / 60)} minutes moved</p>
     <div class="tiles">
@@ -65,7 +47,7 @@ export default {
   </section>
 
   <section class="step streak" hidden>
-    <div class="flame-wrap">${flame}<div class="streak-n">${streak}</div></div>
+    <div class="mascot-wrap">${mascot({ pose: "cheer", face: "wow", anim: true })}<div class="streak-badge">${flame}<b>${streak}</b></div></div>
     <h1 class="h1 pop" style="font-size:40px"><em>${streak} day</em><br>streak!</h1>
     <p class="lead pop d1">Show up tomorrow to keep it going.</p>
     <div class="card pad col12 pop d2">${weekRow(fullWeek(v.week))}

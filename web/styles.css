@@ -174,7 +174,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
 
 .mascot-wrap { position: relative; height: 180px; display: grid; place-items: center; margin-top: 8px; }
-.mascot { width: 150px; height: 160px; overflow: visible; z-index: 1; }
+.mascot { height: 190px; width: auto; max-width: 100%; overflow: visible; z-index: 1; position: relative; }
 .m-body { transform-box: fill-box; transform-origin: 50% 100%; animation: hop 1.1s cubic-bezier(.3,.7,.4,1) infinite; }
 .m-shadow { transform-box: fill-box; transform-origin: center; animation: shadow 1.1s cubic-bezier(.3,.7,.4,1) infinite; }
 .m-arm { transform-box: fill-box; animation: wave .55s ease-in-out infinite alternate; }
@@ -237,3 +237,22 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .map-label.next, .map-label.done { border-color: var(--lime); color: var(--lime); box-shadow: 0 0 18px rgba(198,255,61,.2); }
 .map-label.dim { opacity: .45; }
 .map-label.you { padding: 3px 9px; color: var(--cyan); }
+
+/* ---------- Mascot (src/mascot.js, from the design-sheet artifact) ---------- */
+.mascot-wrap { height: 210px; }
+.mascot.anim .m-all { transform-box: fill-box; transform-origin: 50% 100%; animation: hop 1.1s cubic-bezier(.3,.7,.4,1) infinite; }
+.mascot.anim .pump { transform-box: view-box; transform-origin: 96px 155px; animation: pump .55s ease-in-out infinite alternate; }
+.mascot.anim .flash { animation: flash 1.1s steps(1) infinite; }
+.streak-badge { position: absolute; right: calc(50% - 118px); bottom: 6px; width: 64px; height: 80px; display: grid; place-items: end center; z-index: 2;
+  animation: popin .5s cubic-bezier(.2,1.8,.4,1) .35s backwards; }
+.streak-badge .flame { position: absolute; inset: 0; width: 100%; height: 100%; }
+.streak-badge b { position: relative; font: 400 30px/1 var(--display); color: var(--bg); padding-bottom: 8px; }
+.medal, .plate { width: 190px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; }
+.medal { background: radial-gradient(circle at 34% 28%, #F6FFC4, #C6FF3D 46%, #86AA0F 100%);
+  box-shadow: inset 0 0 0 5px rgba(255,255,255,.4), inset 0 0 0 11px #A6CC1E, inset 0 0 0 14px rgba(60,80,0,.5), 0 9px 0 #5E7B07; }
+.plate { background: #FBFBF8; box-shadow: inset 0 0 0 7px #111, inset 0 0 0 13px #FBFBF8, inset 0 0 0 16px #111, 0 5px 0 #CFCFC6; }
+.medal .mascot, .plate .mascot { height: 150px; }
+@keyframes pump { from { transform: rotate(-4deg); } to { transform: rotate(9deg); } }
+@keyframes flash { 0%, 60% { opacity: 0; } 61% { opacity: 1; } }
+.up-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: -8px; }
+.up-hero .mascot { height: 116px; flex: none; margin-right: -6px; }
