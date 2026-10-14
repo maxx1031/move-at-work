@@ -31,6 +31,7 @@ docs/       TECHNICAL_DESIGN.md (中文), ARCHITECTURE.md, reference/01_UI.html
 
 - [Technical design (中文)](docs/TECHNICAL_DESIGN.md): reconstruction, neon rendering, motion demonstrations, data contracts, and demo milestones.
 - [Latest approved UI — 01_UI.html](docs/reference/01_UI.html): download and open in a browser. The web app implements its five screens.
+- Space reference: [clean office still](docs/media/03_space_clean_v1.png) and a [10 s pan/push video](docs/media/04_space_clean_pan_push_10s.mp4). Use them for the same-camera "Enter workout mode" demo.
 
 ## User journey
 
