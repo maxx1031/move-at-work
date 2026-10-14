@@ -1,18 +1,37 @@
 {
   "exercises": [
     {
-      "id": "split_squat", "name": "Rear-foot supported split squat", "durationSec": 120,
+      "id": "split_squat",
+      "name": "Rear-foot supported split squat",
+      "durationSec": 120,
       "cue": "Rest the top of your back foot on the chair seat. Lower slowly, keep your front knee over your ankle, then rise. Switch legs halfway.",
-      "media": { "type": "video", "src": "media/split_squat.mp4", "caption": "Real-scene video" }
+      "media": {
+        "type": "video",
+        "src": "media/split_squat.mp4",
+        "caption": "Real-scene video"
+      }
     },
     {
-      "id": "railing_leg_stretch", "name": "Railing leg stretch", "durationSec": 120,
+      "id": "railing_leg_stretch",
+      "name": "Railing leg stretch",
+      "durationSec": 120,
       "cue": "Rest one heel on the rail, keep both legs long and lean forward gently from the hips. Hold, breathe, then switch legs.",
-      "media": { "type": "video", "src": "media/railing_leg_stretch.mp4", "caption": "Real-scene video" }
+      "media": {
+        "type": "video",
+        "src": "media/railing_leg_stretch.mp4",
+        "caption": "Real-scene video"
+      }
     },
     {
-      "id": "table_shoulder_stretch", "name": "Table shoulder stretch", "durationSec": 60,
-      "cue": "Hands on the table edge, step back and hinge forward until your back and shoulders open. Keep your neck relaxed."
+      "id": "single_leg_squat",
+      "name": "Table-side single-leg squat",
+      "durationSec": 60,
+      "cue": "Stand beside the table, arms reaching forward. Sit back and down on one leg while the other leg reaches out in front, then stand up. Touch the table edge for balance if you need to. Switch legs halfway.",
+      "media": {
+        "type": "video",
+        "src": "media/table_single_leg_squat.mp4",
+        "caption": "Real-scene video"
+      }
     }
   ]
 }

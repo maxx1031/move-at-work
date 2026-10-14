@@ -5,6 +5,6 @@
   "stops": [
     { "spotId": "spot_01", "exerciseId": "split_squat", "title": "Chair split squat", "durationSec": 120 },
     { "spotId": "spot_02", "exerciseId": "railing_leg_stretch", "title": "Railing stretch", "durationSec": 120 },
-    { "spotId": "spot_03", "exerciseId": "table_shoulder_stretch", "title": "Table stretch", "durationSec": 60 }
+    { "spotId": "spot_03", "exerciseId": "single_leg_squat", "title": "Table squat", "durationSec": 60 }
   ]
 }

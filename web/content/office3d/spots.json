@@ -22,7 +22,7 @@
       "id": "spot_03", "label": "Trapezoid table", "shortName": "table", "objectId": "trapezoid_table",
       "position": [-1.85, 1.11, 2.0], "headingRadians": 0.0, "clearanceRadius": 0.8, "reviewed": true,
       "photo": "media/table.jpg",
-      "exerciseIds": ["table_shoulder_stretch"],
+      "exerciseIds": ["single_leg_squat"],
       "tip": "The wood-tone trapezoid table by the high chairs. Stand at its long edge."
     }
   ]
