@@ -1,0 +1,559 @@
+{
+  "sceneId": "office_demo",
+  "sceneVersion": "v1",
+  "origin": "vggt",
+  "source": "VGGT-1B, depth+camera unprojection",
+  "units": "meters",
+  "upAxis": "Y",
+  "floorY": 0.0,
+  "scaleSource": "assumed median camera height 1.35 m",
+  "vggtToApp": [
+    [
+      7.233565,
+      0.371805,
+      0.954333,
+      -5.246976
+    ],
+    [
+      0.44372,
+      -7.272959,
+      -0.529753,
+      1.366072
+    ],
+    [
+      0.923094,
+      0.582483,
+      -7.223716,
+      6.753846
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": {
+    "min": [
+      -7.019999980926514,
+      -0.10700000077486038,
+      -8.32800006866455
+    ],
+    "max": [
+      6.769999980926514,
+      3.193000078201294,
+      8.050000190734863
+    ]
+  },
+  "wallHeight": 3.0,
+  "topdown": {
+    "file": "topdown.png",
+    "cellMeters": 0.02,
+    "originXZ": [
+      -6.471399784088135,
+      -8.328100204467773
+    ],
+    "sizePx": [
+      661,
+      820
+    ]
+  },
+  "objects": [],
+  "numPoints": 439275,
+  "floorFit": {
+    "inlierFraction": 0.454,
+    "tiltFromCameraUpDeg": 6.24
+  },
+  "cameras": [
+    {
+      "file": "photos/0000.jpg",
+      "position": [
+        -5.2443,
+        1.3643,
+        6.7555
+      ],
+      "quaternion": [
+        -0.038043,
+        -0.065692,
+        0.027754,
+        0.996728
+      ],
+      "fovY": 48.1,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.364
+    },
+    {
+      "file": "photos/0001.jpg",
+      "position": [
+        -5.2449,
+        1.3429,
+        6.7732
+      ],
+      "quaternion": [
+        -0.051205,
+        -0.035116,
+        0.020925,
+        0.997851
+      ],
+      "fovY": 46.926,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.343
+    },
+    {
+      "file": "photos/0002.jpg",
+      "position": [
+        -4.9775,
+        1.3265,
+        5.7452
+      ],
+      "quaternion": [
+        -0.070119,
+        0.062177,
+        0.031071,
+        0.995114
+      ],
+      "fovY": 46.342,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.326
+    },
+    {
+      "file": "photos/0003.jpg",
+      "position": [
+        -4.7909,
+        1.2912,
+        4.6329
+      ],
+      "quaternion": [
+        -0.081251,
+        0.176148,
+        0.037336,
+        0.980294
+      ],
+      "fovY": 48.204,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.291
+    },
+    {
+      "file": "photos/0004.jpg",
+      "position": [
+        -4.7583,
+        1.3029,
+        3.4662
+      ],
+      "quaternion": [
+        -0.072858,
+        0.060121,
+        0.021572,
+        0.995295
+      ],
+      "fovY": 47.926,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.303
+    },
+    {
+      "file": "photos/0005.jpg",
+      "position": [
+        -4.7194,
+        1.3227,
+        2.6267
+      ],
+      "quaternion": [
+        -0.090157,
+        0.008202,
+        0.008542,
+        0.995857
+      ],
+      "fovY": 47.744,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.323
+    },
+    {
+      "file": "photos/0006.jpg",
+      "position": [
+        -4.7552,
+        1.4339,
+        2.0782
+      ],
+      "quaternion": [
+        -0.107506,
+        -0.234479,
+        -0.006808,
+        0.966134
+      ],
+      "fovY": 48.266,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.434
+    },
+    {
+      "file": "photos/0007.jpg",
+      "position": [
+        -5.0186,
+        1.3066,
+        2.2495
+      ],
+      "quaternion": [
+        -0.097016,
+        -0.439229,
+        -0.026883,
+        0.892716
+      ],
+      "fovY": 47.321,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.307
+    },
+    {
+      "file": "photos/0008.jpg",
+      "position": [
+        -5.1098,
+        1.3492,
+        2.5434
+      ],
+      "quaternion": [
+        -0.099809,
+        -0.536605,
+        -0.048545,
+        0.836502
+      ],
+      "fovY": 47.397,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.349
+    },
+    {
+      "file": "photos/0009.jpg",
+      "position": [
+        -5.1848,
+        1.4101,
+        2.9048
+      ],
+      "quaternion": [
+        -0.085597,
+        -0.653117,
+        -0.058634,
+        0.750116
+      ],
+      "fovY": 46.357,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.41
+    },
+    {
+      "file": "photos/0010.jpg",
+      "position": [
+        -4.8267,
+        1.3508,
+        3.4571
+      ],
+      "quaternion": [
+        0.081848,
+        0.70914,
+        0.074538,
+        -0.696323
+      ],
+      "fovY": 47.729,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.351
+    },
+    {
+      "file": "photos/0011.jpg",
+      "position": [
+        -4.8935,
+        1.3549,
+        3.8113
+      ],
+      "quaternion": [
+        0.074964,
+        0.795417,
+        0.082906,
+        -0.595667
+      ],
+      "fovY": 46.739,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.355
+    },
+    {
+      "file": "photos/0012.jpg",
+      "position": [
+        -4.8501,
+        1.3742,
+        4.1183
+      ],
+      "quaternion": [
+        0.064516,
+        0.874753,
+        0.090557,
+        -0.471641
+      ],
+      "fovY": 48.728,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.374
+    },
+    {
+      "file": "photos/0013.jpg",
+      "position": [
+        -4.3221,
+        1.3561,
+        4.1928
+      ],
+      "quaternion": [
+        0.083511,
+        0.802413,
+        0.086217,
+        -0.584573
+      ],
+      "fovY": 47.91,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.356
+    },
+    {
+      "file": "photos/0014.jpg",
+      "position": [
+        -3.6201,
+        1.2885,
+        4.0617
+      ],
+      "quaternion": [
+        -0.108233,
+        -0.687855,
+        -0.070344,
+        0.714278
+      ],
+      "fovY": 47.146,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.289
+    },
+    {
+      "file": "photos/0015.jpg",
+      "position": [
+        -3.0825,
+        1.2862,
+        3.7731
+      ],
+      "quaternion": [
+        0.101444,
+        0.702598,
+        0.070987,
+        -0.700733
+      ],
+      "fovY": 47.035,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.286
+    },
+    {
+      "file": "photos/0016.jpg",
+      "position": [
+        -2.1895,
+        1.3559,
+        3.3166
+      ],
+      "quaternion": [
+        0.074329,
+        0.822944,
+        0.079218,
+        -0.557641
+      ],
+      "fovY": 47.618,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.356
+    },
+    {
+      "file": "photos/0017.jpg",
+      "position": [
+        -1.7804,
+        1.4843,
+        3.2638
+      ],
+      "quaternion": [
+        0.056752,
+        0.895783,
+        0.082152,
+        -0.433132
+      ],
+      "fovY": 47.431,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.484
+    },
+    {
+      "file": "photos/0018.jpg",
+      "position": [
+        -1.4127,
+        1.5143,
+        3.3508
+      ],
+      "quaternion": [
+        0.046007,
+        0.913337,
+        0.068381,
+        -0.398777
+      ],
+      "fovY": 49.336,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.514
+    },
+    {
+      "file": "photos/0019.jpg",
+      "position": [
+        -1.1116,
+        1.3462,
+        3.8776
+      ],
+      "quaternion": [
+        0.062587,
+        0.767584,
+        0.01572,
+        -0.637692
+      ],
+      "fovY": 48.496,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.346
+    },
+    {
+      "file": "photos/0020.jpg",
+      "position": [
+        -1.0718,
+        1.2842,
+        3.4475
+      ],
+      "quaternion": [
+        -0.05797,
+        -0.636607,
+        -0.013767,
+        0.768884
+      ],
+      "fovY": 47.887,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.284
+    },
+    {
+      "file": "photos/0021.jpg",
+      "position": [
+        -1.041,
+        1.3382,
+        2.637
+      ],
+      "quaternion": [
+        -0.068885,
+        -0.452147,
+        -0.002832,
+        0.889275
+      ],
+      "fovY": 49.378,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.338
+    },
+    {
+      "file": "photos/0022.jpg",
+      "position": [
+        -0.8108,
+        1.348,
+        2.2846
+      ],
+      "quaternion": [
+        -0.069434,
+        -0.337481,
+        0.012689,
+        0.938682
+      ],
+      "fovY": 50.709,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.348
+    },
+    {
+      "file": "photos/0023.jpg",
+      "position": [
+        -0.5061,
+        1.4156,
+        2.013
+      ],
+      "quaternion": [
+        -0.053776,
+        -0.249556,
+        0.02312,
+        0.966589
+      ],
+      "fovY": 49.019,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.416
+    },
+    {
+      "file": "photos/0024.jpg",
+      "position": [
+        -0.5087,
+        1.3847,
+        1.0165
+      ],
+      "quaternion": [
+        -0.055915,
+        -0.251536,
+        0.023091,
+        0.965956
+      ],
+      "fovY": 46.75,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.385
+    },
+    {
+      "file": "photos/0025.jpg",
+      "position": [
+        -0.0224,
+        1.3352,
+        0.1914
+      ],
+      "quaternion": [
+        -0.0684,
+        -0.332959,
+        0.002802,
+        0.940453
+      ],
+      "fovY": 49.316,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.335
+    },
+    {
+      "file": "photos/0026.jpg",
+      "position": [
+        0.709,
+        1.5981,
+        -1.0559
+      ],
+      "quaternion": [
+        -0.04583,
+        -0.266527,
+        0.025284,
+        0.962405
+      ],
+      "fovY": 48.693,
+      "aspect": 0.56757,
+      "heightAboveFloor": 1.598
+    },
+    {
+      "file": "photos/0027.jpg",
+      "position": [
+        3.2731,
+        2.0125,
+        -1.8431
+      ],
+      "quaternion": [
+        -0.014905,
+        -0.097021,
+        0.039177,
+        0.994399
+      ],
+      "fovY": 49.993,
+      "aspect": 0.56757,
+      "heightAboveFloor": 2.013
+    }
+  ],
+  "scaleCheck": {
+    "object": "booth wooden table (frames 0016-0017)",
+    "tableTopHeightM": 0.72,
+    "longEdgeM": [
+      1.35,
+      1.47
+    ],
+    "shortEdgeM": 0.91,
+    "userEstimateM": {
+      "long": 1.35,
+      "short": 0.8
+    },
+    "note": "camera-height scale kept; within ~10% of user estimate"
+  }
+}

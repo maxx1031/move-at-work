@@ -1,0 +1,65 @@
+{
+  "sceneId": "office",
+  "sceneVersion": "v1",
+  "units": "meters",
+  "upAxis": "Y",
+  "spots": [
+    {
+      "id": "spot_01",
+      "label": "Desk side",
+      "shortName": "desk",
+      "objectId": "desk_booth_01",
+      "clearanceRadius": 0.7,
+      "exerciseIds": [
+        "desk_stretch",
+        "neck_shoulders"
+      ],
+      "tip": "Stand facing the wooden booth table. Check it doesn't roll before you lean on it.",
+      "position": [
+        3.502,
+        0.0,
+        -0.783
+      ],
+      "headingRadians": 0.0,
+      "reviewed": false
+    },
+    {
+      "id": "spot_02",
+      "label": "By the chair",
+      "shortName": "chair",
+      "objectId": "chair_04",
+      "clearanceRadius": 0.7,
+      "exerciseIds": [
+        "seated_calf_raise",
+        "seated_knee_lift"
+      ],
+      "tip": "Take an end folding chair by the aisle and keep your feet flat.",
+      "position": [
+        -0.442,
+        0.0,
+        -2.276
+      ],
+      "headingRadians": 0.0,
+      "reviewed": false
+    },
+    {
+      "id": "spot_03",
+      "label": "By the railing",
+      "shortName": "railing",
+      "objectId": "rail_15",
+      "clearanceRadius": 1.0,
+      "exerciseIds": [
+        "march_in_place",
+        "standing_stretch"
+      ],
+      "tip": "Stand on the open floor beside the platform railing, an arm's length of space around you.",
+      "position": [
+        -2.82,
+        0.0,
+        0.957
+      ],
+      "headingRadians": 0.0,
+      "reviewed": false
+    }
+  ]
+}

@@ -5,9 +5,9 @@ work/
 !.env.example
 
 # local scene assets (office photos, point clouds) stay out of the public repo
-web/scenes/
 web/content/*
 !web/content/demo/
 !web/content/office3d/
+!web/content/office/
 .vercel
 __pycache__/

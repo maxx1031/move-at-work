@@ -1,0 +1,19 @@
+{
+  "exercises": [
+    {
+      "id": "seated_calf_raise", "name": "Seated calf raise", "durationSec": 60,
+      "cue": "Hold the seat, feet flat. Lift your heels, then lower them. Go at your own pace and breathe naturally.",
+      "media": { "type": "image", "src": "media/seated_calf_raise.svg", "caption": "Illustration · upload your own video" }
+    },
+    { "id": "seated_knee_lift", "name": "Seated knee lift", "durationSec": 60,
+      "cue": "Sit tall, hold the seat and lift one knee at a time." },
+    { "id": "march_in_place", "name": "March in place", "durationSec": 120,
+      "cue": "March on the spot, knees up to a comfortable height, arms swinging easily." },
+    { "id": "standing_stretch", "name": "Standing stretch", "durationSec": 60,
+      "cue": "Reach both arms overhead, lengthen through your sides, then relax." },
+    { "id": "desk_stretch", "name": "Desk stretch", "durationSec": 120,
+      "cue": "Hands on the desk edge, step back and hinge forward until you feel your back and shoulders open." },
+    { "id": "neck_shoulders", "name": "Neck and shoulders", "durationSec": 60,
+      "cue": "Roll your shoulders back slowly, then tilt your head gently side to side." }
+  ]
+}

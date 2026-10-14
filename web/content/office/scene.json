@@ -1,0 +1,684 @@
+{
+  "sceneId": "office",
+  "sceneVersion": "v1",
+  "origin": "hand-authored",
+  "note": "Laid out from the annotated floor-plan sketch; positions approximate, not measured. Booth table size from the VGGT reconstruction. Map rotated 180 deg vs the sketch (street windows at back).",
+  "units": "meters",
+  "upAxis": "Y",
+  "floorY": 0.0,
+  "wallHeight": 3.0,
+  "bounds": {
+    "min": [
+      -6.851,
+      0.0,
+      -4.988
+    ],
+    "max": [
+      6.851,
+      3.0,
+      4.988
+    ]
+  },
+  "entry": [
+    3.415,
+    0.0,
+    -4.688
+  ],
+  "objects": [
+    {
+      "id": "window_01",
+      "kind": "window",
+      "position": [
+        5.64,
+        0.1,
+        -4.978
+      ],
+      "size": [
+        2.421,
+        2.4,
+        0.02
+      ]
+    },
+    {
+      "id": "window_02",
+      "kind": "window",
+      "position": [
+        -2.226,
+        0.1,
+        -4.978
+      ],
+      "size": [
+        9.251,
+        2.4,
+        0.02
+      ]
+    },
+    {
+      "id": "phone_booth_01",
+      "kind": "booth",
+      "position": [
+        6.201,
+        0.0,
+        -0.797
+      ],
+      "size": [
+        1.2,
+        2.2,
+        1.3
+      ]
+    },
+    {
+      "id": "phone_booth_02",
+      "kind": "booth",
+      "position": [
+        6.201,
+        0.0,
+        -3.045
+      ],
+      "size": [
+        1.2,
+        2.2,
+        1.3
+      ]
+    },
+    {
+      "id": "sofa_booth_01",
+      "kind": "sofa",
+      "position": [
+        3.502,
+        0.0,
+        1.421
+      ],
+      "size": [
+        2.4,
+        1.1,
+        1.0
+      ]
+    },
+    {
+      "id": "desk_booth_01",
+      "kind": "desk",
+      "position": [
+        3.502,
+        0.0,
+        0.131
+      ],
+      "size": [
+        1.4,
+        0.72,
+        0.8
+      ],
+      "note": "measured: top 0.72 m, ~1.4 x 0.8 m"
+    },
+    {
+      "id": "platform_01",
+      "kind": "platform",
+      "position": [
+        -0.065,
+        0.0,
+        2.509
+      ],
+      "size": [
+        4.408,
+        0.45,
+        4.408
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "rail_01",
+      "kind": "rail",
+      "position": [
+        2.195,
+        0.0,
+        1.454
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_02",
+      "kind": "rail",
+      "position": [
+        2.4,
+        0.0,
+        2.133
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_03",
+      "kind": "rail",
+      "position": [
+        2.406,
+        0.0,
+        2.841
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_04",
+      "kind": "rail",
+      "position": [
+        2.213,
+        0.0,
+        3.523
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_05",
+      "kind": "rail",
+      "position": [
+        1.836,
+        0.0,
+        4.123
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_06",
+      "kind": "rail",
+      "position": [
+        1.305,
+        0.0,
+        4.592
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_07",
+      "kind": "rail",
+      "position": [
+        0.664,
+        0.0,
+        4.894
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_08",
+      "kind": "rail",
+      "position": [
+        -0.036,
+        0.0,
+        5.002
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_09",
+      "kind": "rail",
+      "position": [
+        -0.739,
+        0.0,
+        4.91
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_10",
+      "kind": "rail",
+      "position": [
+        -1.387,
+        0.0,
+        4.624
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_11",
+      "kind": "rail",
+      "position": [
+        -1.928,
+        0.0,
+        4.167
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_12",
+      "kind": "rail",
+      "position": [
+        -2.319,
+        0.0,
+        3.576
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_13",
+      "kind": "rail",
+      "position": [
+        -2.529,
+        0.0,
+        2.899
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_14",
+      "kind": "rail",
+      "position": [
+        -2.539,
+        0.0,
+        2.19
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_15",
+      "kind": "rail",
+      "position": [
+        -2.349,
+        0.0,
+        1.507
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "rail_16",
+      "kind": "rail",
+      "position": [
+        -1.976,
+        0.0,
+        0.905
+      ],
+      "size": [
+        0.08,
+        1.05,
+        0.08
+      ]
+    },
+    {
+      "id": "high_table_01",
+      "kind": "table",
+      "position": [
+        -4.415,
+        0.0,
+        3.321
+      ],
+      "size": [
+        0.8,
+        1.05,
+        0.8
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "stool_01",
+      "kind": "stool",
+      "position": [
+        -4.415,
+        0.0,
+        4.191
+      ],
+      "size": [
+        0.4,
+        0.75,
+        0.4
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "stool_02",
+      "kind": "stool",
+      "position": [
+        -5.314,
+        0.0,
+        3.06
+      ],
+      "size": [
+        0.4,
+        0.75,
+        0.4
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "round_table_01",
+      "kind": "table",
+      "position": [
+        2.008,
+        0.0,
+        -2.248
+      ],
+      "size": [
+        1.0,
+        1.05,
+        1.0
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "stool_03",
+      "kind": "stool",
+      "position": [
+        2.98,
+        0.0,
+        -1.755
+      ],
+      "size": [
+        0.4,
+        0.75,
+        0.4
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "stool_04",
+      "kind": "stool",
+      "position": [
+        1.051,
+        0.0,
+        -1.755
+      ],
+      "size": [
+        0.4,
+        0.75,
+        0.4
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "stool_05",
+      "kind": "stool",
+      "position": [
+        2.98,
+        0.0,
+        -2.813
+      ],
+      "size": [
+        0.4,
+        0.75,
+        0.4
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "stool_06",
+      "kind": "stool",
+      "position": [
+        1.051,
+        0.0,
+        -2.813
+      ],
+      "size": [
+        0.4,
+        0.75,
+        0.4
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "stool_07",
+      "kind": "stool",
+      "position": [
+        2.008,
+        0.0,
+        -3.292
+      ],
+      "size": [
+        0.4,
+        0.75,
+        0.4
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "id": "chair_01",
+      "kind": "chair",
+      "position": [
+        -1.167,
+        0.0,
+        -1.073
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_02",
+      "kind": "chair",
+      "position": [
+        -2.211,
+        0.0,
+        -1.073
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_03",
+      "kind": "chair",
+      "position": [
+        -3.255,
+        0.0,
+        -1.073
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_04",
+      "kind": "chair",
+      "position": [
+        -1.167,
+        0.0,
+        -2.276
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_05",
+      "kind": "chair",
+      "position": [
+        -2.211,
+        0.0,
+        -2.276
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_06",
+      "kind": "chair",
+      "position": [
+        -3.255,
+        0.0,
+        -2.276
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_07",
+      "kind": "chair",
+      "position": [
+        -1.167,
+        0.0,
+        -3.48
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_08",
+      "kind": "chair",
+      "position": [
+        -2.211,
+        0.0,
+        -3.48
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "chair_09",
+      "kind": "chair",
+      "position": [
+        -3.255,
+        0.0,
+        -3.48
+      ],
+      "size": [
+        0.45,
+        0.8,
+        0.45
+      ]
+    },
+    {
+      "id": "curved_sofa_01",
+      "kind": "sofa",
+      "position": [
+        -5.793,
+        0.0,
+        0.232
+      ],
+      "size": [
+        0.9,
+        0.8,
+        0.9
+      ]
+    },
+    {
+      "id": "curved_sofa_02",
+      "kind": "sofa",
+      "position": [
+        -5.923,
+        0.0,
+        -1.0
+      ],
+      "size": [
+        0.9,
+        0.8,
+        0.9
+      ]
+    },
+    {
+      "id": "curved_sofa_03",
+      "kind": "sofa",
+      "position": [
+        -5.807,
+        0.0,
+        -2.233
+      ],
+      "size": [
+        0.9,
+        0.8,
+        0.9
+      ]
+    },
+    {
+      "id": "curved_sofa_04",
+      "kind": "sofa",
+      "position": [
+        -5.401,
+        0.0,
+        -3.393
+      ],
+      "size": [
+        0.9,
+        0.8,
+        0.9
+      ]
+    },
+    {
+      "id": "curved_sofa_05",
+      "kind": "sofa",
+      "position": [
+        -4.705,
+        0.0,
+        -4.336
+      ],
+      "size": [
+        0.9,
+        0.8,
+        0.9
+      ]
+    }
+  ]
+}
