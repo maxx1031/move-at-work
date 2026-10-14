@@ -26,15 +26,14 @@ export default {
       preview: s.exercise.media?.type === "video" && `<video src="${esc(s.exercise.media.src)}#t=0.1" muted playsinline preload="metadata"></video>`,
     })).join("");
     return `<div class="screen">
-  <div class="row">${logo()}<div class="mono muted s11">Setup · 1 / 2</div></div>
-  ${segments(2, 0, 1)}
+  <div class="row">${logo()}<div class="mono muted s11">Photos &amp; videos</div></div>
   <div class="up-hero"><h1 class="h1" style="font-size:44px">Bring your<br><em>space in.</em></h1>${mascot({ pose: "snap", face: "wink", anim: true })}</div>
   <p class="lead">Add a photo of each spot and a short video of each move. Files stay on this phone.</p>
   <div class="scroll">
     <div class="sect">YOUR SPOTS · PHOTO</div>${spots}
     <div class="sect">YOUR MOVES · VIDEO</div>${moves}
   </div>
-  <button class="btn primary" data-action="finishUpload">Build my space ${icon.arrow}</button>
+  <button class="btn primary" data-action="finishUpload">Save ${icon.check}</button>
 </div>`;
   },
 

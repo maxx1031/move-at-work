@@ -53,8 +53,8 @@
 <body>
 <header>
   <div class="logo">JUST STANDUP</div>
-  <h1>界面总览 · <em>7 个页面</em></h1>
-  <p class="intro">把熟悉的办公室变成一条 5 分钟的运动路线。下面每个手机框都是正在运行的 app（不是截图）：3D 地图可以拖动旋转，视频会播放，按钮能点。页面按真实使用顺序排列：首次设置（01–02）→ 每日运动（03–05）→ 完成（06–07）。</p>
+  <h1>界面总览 · <em>9 个页面</em></h1>
+  <p class="intro">把熟悉的办公室变成一条 5 分钟的运动路线。下面每个手机框都是正在运行的 app（不是截图）：3D 地图可以拖动旋转，视频会播放，按钮能点。页面按真实使用顺序排列：首次设置三步（01 房间视频 → 02 生成 3D 渲染 → 03 最终效果）→ 每日运动（04–06）→ 完成（07–08）；09 是首页齿轮里的素材管理。</p>
   <nav class="flow" id="flow"></nav>
 </header>
 <main id="shots"></main>
@@ -64,17 +64,27 @@
 // Each entry renders the real app at one screen via ?screen=… (see src/main.js). `after` runs inside the frame once it's ready.
 const SHOTS = [
   {
-    screen: "upload", title: "带入你的空间", en: "Bring your space in",
+    screen: "scan", title: "扫描空间", en: "Scan your space",
     body: [
-      "首次设置的第一步。给每个运动点位拍一张照片，给每个动作上传一段示范视频。右上角的吉祥物拿着相机在拍照。",
-      "已经内置了示例素材（三张点位照片、两段真人动作视频），标注为「Sample included」，点一下就能换成自己拍的。也可以直接跳过。",
+      "首次设置第 1 步：拿手机在房间里慢慢走一圈，录一段视频。这段视频就是后面 3D 重建的输入。",
+      "默认放的是这间办公室的样例视频，可以点「Record or pick another video」换成自己录的。页面上给了两条拍摄要点：走慢一点、让地面入镜；经过每个想用的椅子、栏杆和桌子。",
     ],
-    action: "点选拍照或录像 → 「Build my space」",
-    data: "上传的文件只存在这台手机（IndexedDB），不经过服务器",
-    code: "screens/upload.js · media.js",
+    action: "录制或选择视频 → 「Build my 3D space」",
+    data: "scene.json 的 capture.video；用户自己的视频存在本机（IndexedDB，key = scan）",
+    code: "screens/scan.js",
   },
   {
-    screen: "ready", title: "空间就绪", en: "Right here. Your gym.",
+    screen: "build", title: "生成 3D 空间", en: "Building your space",
+    body: [
+      "首次设置第 2 步：房间视频淡出，荧光 3D 办公室从地面一层层「长」出来；右边的步骤依次打勾：抽帧 → 相机与深度 → 米制尺度 → 识别运动点位 → 荧光渲染。",
+      "这个 demo 的办公室模型是离线用同一段视频搭好的，这里只是回放生成过程，页面底部有说明，不冒充现场实时重建。",
+    ],
+    action: "等进度到 100%，点位标签出现后 → 「See my space」",
+    data: "scene.json 的 capture.steps；3D 模型 model.js",
+    code: "screens/build.js · map/threeMap.js（reveal 动画）",
+  },
+  {
+    screen: "ready", title: "空间就绪（最终效果）", en: "Right here. Your gym.",
     body: [
       "展示建好的办公室 3D 场景：弧形平台和栏杆、电话亭、折叠椅、梯形桌、窗边沙发。地图上标出找到的 3 个运动点。",
       "下方列出每个点位适合的动作和时长。这个场景是根据实拍视频和确认过的平面图手工搭的，不是自动精确重建，所以标签写的是「3D SPACE MODELED」。",
@@ -131,6 +141,16 @@ const SHOTS = [
     action: "「Back to my space」回到首页（显示今日已完成）",
     data: "打卡记录按日期保存在本机；新的一天自动重置当天进度",
     code: "screens/done.js · store.js（streak）",
+  },
+  {
+    screen: "upload", title: "照片与视频", en: "Bring your space in",
+    body: [
+      "从首页右上角的齿轮进入，可以随时换素材。给每个运动点位拍一张照片，给每个动作上传一段示范视频。右上角的吉祥物拿着相机在拍照。",
+      "已经内置了示例素材（三张点位照片、两段真人动作视频），标注为「Sample included」，点一下就能换成自己拍的。也可以直接跳过。",
+    ],
+    action: "点选拍照或录像 → 「Build my space」",
+    data: "上传的文件只存在这台手机（IndexedDB），不经过服务器",
+    code: "screens/upload.js · media.js",
   },
 ];
 

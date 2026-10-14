@@ -19,6 +19,7 @@ export async function loadPack(id) {
   if (spotDoc.sceneId !== scene.sceneId) console.warn(`spots.json is for "${spotDoc.sceneId}", scene is "${scene.sceneId}"`);
   if (scene.topdown) scene.topdown.href = base + scene.topdown.file;
   if (scene.model) scene.model.href = base + scene.model.src;
+  if (scene.capture) scene.capture = { ...scene.capture, video: base + scene.capture.video, poster: scene.capture.poster && base + scene.capture.poster };
   scene.objects ??= [];
 
   const exercises = exDoc.exercises.map((e) => (e.media ? { ...e, media: { ...e.media, src: base + e.media.src } } : e));
@@ -37,15 +38,18 @@ export async function loadPack(id) {
 }
 
 // Overlay user-uploaded media (see media.js) onto a pack. Pure; returns a new pack.
-// urls: { "spot:<id>": objectURL (photo), "exercise:<id>": objectURL (video) }
+// urls: { "scan": objectURL (room video), "spot:<id>": objectURL (photo), "exercise:<id>": objectURL (video) }
 export function withMedia(pack, urls) {
   const spot = (s) => (urls[`spot:${s.id}`] ? { ...s, photo: urls[`spot:${s.id}`], uploaded: true } : s);
   const exercise = (e) => {
     const src = urls[`exercise:${e.id}`];
     return src ? { ...e, media: { type: "video", src, caption: "Your video", uploaded: true } } : e;
   };
+  const scene = urls.scan && pack.scene.capture
+    ? { ...pack.scene, capture: { ...pack.scene.capture, video: urls.scan, poster: null, uploaded: true } } : pack.scene;
   return {
     ...pack,
+    scene,
     spots: pack.spots.map(spot),
     exercises: pack.exercises.map(exercise),
     stops: pack.stops.map((st) => ({ ...st, spot: spot(st.spot), exercise: exercise(st.exercise) })),

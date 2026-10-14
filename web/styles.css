@@ -256,3 +256,32 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @keyframes flash { 0%, 60% { opacity: 0; } 61% { opacity: 1; } }
 .up-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: -8px; }
 .up-hero .mascot { height: 116px; flex: none; margin-right: -6px; }
+
+/* ---------- Setup: scan (room video) → build (rendering) ---------- */
+.screen > .scanbox { flex: 1 1 0; }
+.scanbox { position: relative; min-height: 170px; border-radius: 28px; overflow: hidden; background: #000; border: 1px solid rgba(94,230,208,.25); }
+.finder { position: absolute; inset: 16px; pointer-events: none;
+  background: linear-gradient(var(--lime), var(--lime)) 0 0 / 22px 2px, linear-gradient(var(--lime), var(--lime)) 0 0 / 2px 22px,
+    linear-gradient(var(--lime), var(--lime)) 100% 0 / 22px 2px, linear-gradient(var(--lime), var(--lime)) 100% 0 / 2px 22px,
+    linear-gradient(var(--lime), var(--lime)) 0 100% / 22px 2px, linear-gradient(var(--lime), var(--lime)) 0 100% / 2px 22px,
+    linear-gradient(var(--lime), var(--lime)) 100% 100% / 22px 2px, linear-gradient(var(--lime), var(--lime)) 100% 100% / 2px 22px;
+  background-repeat: no-repeat; }
+.tips { margin: 0; padding: 0 0 0 18px; color: var(--soft); font-size: 13px; line-height: 1.6; }
+.tips li::marker { color: var(--lime); }
+.btn.ghost { margin-top: 0; height: 44px; font-size: 14px; background: var(--card); color: var(--text); border: 1px solid rgba(255,255,255,.1); cursor: pointer; }
+.btn:disabled { opacity: .35; box-shadow: none; cursor: default; }
+.mapbox.buildbox { max-height: 320px; border-color: rgba(198,255,61,.3); }
+.buildbox .media.fadeout { z-index: 1; animation: fadeout 1s ease .9s forwards; pointer-events: none; }
+.buildbox .chip { z-index: 2; }
+.buildpct { position: absolute; right: 16px; bottom: 12px; z-index: 2; font-size: 26px; color: var(--lime); }
+.map-labels { transition: opacity .4s; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.steps li { display: flex; align-items: center; gap: 10px; opacity: .35; transition: opacity .3s; }
+.steps li i { width: 22px; height: 22px; flex: none; border-radius: 50%; border: 1.5px solid var(--muted); display: grid; place-items: center; color: transparent; }
+.steps li i svg { width: 12px; height: 12px; }
+.steps li span { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.steps li b { font-size: 14px; } .steps li small { font: 11px var(--mono); color: var(--muted); }
+.steps li.now { opacity: 1; } .steps li.now i { border-color: var(--lime); animation: pulse-ring 1s ease-in-out infinite; }
+.steps li.done { opacity: 1; } .steps li.done i { background: var(--lime); border-color: var(--lime); color: var(--bg); }
+@keyframes fadeout { to { opacity: 0; } }
+@keyframes pulse-ring { 50% { box-shadow: 0 0 0 4px rgba(198,255,61,.25); } }

@@ -1,5 +1,6 @@
 // Three.js map for packs whose scene.json has a `model` (a module exporting build(THREE) -> Group).
-// Same contract as isoMap: mountThreeMap(el, scene, view) -> cleanup. View fields: see isoMap.js.
+// Same contract as isoMap: mountThreeMap(el, scene, view) -> cleanup. View fields: see isoMap.js, plus
+//   reveal: seconds — the model grows from the floor up (clipping plane + scan plane), labels appear at the end.
 // Look and camera follow final_rendering_effect.html (neon scene V5).
 import * as THREE from "three";
 
@@ -113,9 +114,10 @@ export function mountThreeMap(el, sceneDoc, view) {
   el.append(renderer.domElement, labels);
 
   // --- model (cached; first mount waits for it) ---
-  let dead = false;
+  let dead = false, shownAt = null;
   loadModel(sceneDoc.model.href).then((model) => {
     if (dead) return;
+    shownAt = performance.now();
     if (T.model !== model) { if (T.model) T.scene.remove(T.model); T.scene.add(model); T.model = model; }
     tint(model, view);
     for (const name of sceneDoc.model.hideInTopView ?? []) {
@@ -158,6 +160,14 @@ export function mountThreeMap(el, sceneDoc, view) {
   };
   cv.onpointerup = cv.onpointercancel = () => (drag = null);
 
+  // --- reveal: clip everything above a rising height ---
+  const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+  const sweep = flat(new THREE.PlaneGeometry(13, 10), mat(LIME, 0.07));
+  sweep.visible = !!view.reveal;
+  overlay.add(sweep);
+  renderer.clippingPlanes = view.reveal ? [clip] : [];
+  labels.style.opacity = view.reveal ? 0 : 1;
+
   // --- loop ---
   const t0 = performance.now(), v = new THREE.Vector3();
   let raf = 0;
@@ -170,6 +180,13 @@ export function mountThreeMap(el, sceneDoc, view) {
     camera.lookAt(target);
     markers.forEach((m, i) => m.scale.setScalar(m.userData.pulse ? 1 + Math.sin(t * 3) * 0.12 : 1 + Math.sin(t * 2 + i) * 0.04));
     if (mover) particle.position.copy(mover.userData.curve.getPoint((t * (leg ? 0.25 : 0.09)) % 1));
+    if (view.reveal) {
+      const k = shownAt ? Math.min(1, (now - shownAt) / 1000 / view.reveal) : 0;
+      clip.constant = k < 1 ? -0.05 + k * 3.6 : 100;
+      sweep.position.y = clip.constant - 0.02;
+      sweep.visible = k < 1;
+      labels.style.opacity = k < 1 ? 0 : 1;
+    }
     renderer.render(T.scene, camera);
     const place = (tag, p, lift) => {
       v.set(p[0], (p.length > 2 ? p[1] : 0) + lift, p[p.length - 1]).project(camera);
@@ -184,6 +201,7 @@ export function mountThreeMap(el, sceneDoc, view) {
     dead = true;
     cancelAnimationFrame(raf);
     ro.disconnect();
+    renderer.clippingPlanes = [];
     cv.onpointerdown = cv.onpointermove = cv.onpointerup = cv.onpointercancel = null;
     labels.remove();
     cv.remove();

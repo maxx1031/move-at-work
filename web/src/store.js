@@ -1,6 +1,7 @@
 // Session state machine + persistence. No DOM.
 //
-//   upload → ready → home → navigate → move → navigate … → done → home
+//   scan (room video) → build (rendering) → ready → home → navigate → move → navigate … → done → home
+//   upload (spot photos / move videos) is opened from home
 //
 // Persisted state (localStorage):
 //   { setupDone, screen, history: { "YYYY-MM-DD": true }, today: { date, done: { [spotId]: seconds } } }
@@ -12,7 +13,7 @@ export const dateKey = (d = new Date()) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
 function fresh(saved, today) {
-  const st = { setupDone: false, screen: "upload", history: {}, today: { date: today, done: {} }, ...saved };
+  const st = { setupDone: false, screen: "scan", history: {}, today: { date: today, done: {} }, ...saved };
   if (st.today.date !== today) st.today = { date: today, done: {} };
   if (st.setupDone && ["navigate", "move", "done"].includes(st.screen) && !Object.keys(st.today.done).length) st.screen = "home";
   return st;
@@ -21,6 +22,9 @@ function fresh(saved, today) {
 export function reduce(st, a, pack) {
   const next = pack.stops.find((s) => !(s.spot.id in st.today.done));
   switch (a.type) {
+    case "scanned": return { ...st, screen: "build" };
+    case "built": return { ...st, screen: "ready" };
+    case "rescan": return { ...st, screen: "scan" };
     case "openUpload": return { ...st, screen: "upload" };
     case "finishUpload": return { ...st, screen: st.setupDone ? "home" : "ready" };
     case "enterSpace": return { ...st, setupDone: true, screen: "home" };

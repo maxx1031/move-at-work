@@ -12,8 +12,8 @@ export default {
   <div class="mono muted s12">${prime(s.durationSec)}</div>
 </div>`).join("");
     return `<div class="screen">
-  <div class="row">${logo()}<div class="mono muted s11">Setup · Done</div></div>
-  ${segments(2, 2)}
+  <div class="row">${logo()}<div class="mono muted s11">Setup · 3 / 3</div></div>
+  ${segments(3, 3)}
   <h1 class="h1" style="font-size:48px">Right here.<br><em>Your gym.</em></h1>
   <p class="lead">We found ${v.total} spots around you. Set it up once, move anytime.</p>
   <div class="mapbox">

@@ -41,6 +41,7 @@ All coordinates: meters, right-handed, **Y up, floor at y = 0**, the same frame 
 |---|---|---|
 | `scene.json` | `sceneId`, `origin` (`"vggt"` \| `"modeled"` \| `"hand-authored"`), `model?{src,camera,hideInTopView,objects}`, `bounds{min,max}`, `wallHeight`, `entry[x,y,z]`, `objects[{id,kind,position(bottom-centre),size}]`, `topdown{file,cellMeters,originXZ,sizePx}`, `cameras[]` | build_scene.py / hand |
 | `spots.json` | `spots[{id,label,shortName,objectId,position,headingRadians,clearanceRadius,reviewed,exerciseIds,tip,photo?}]` | scene editor |
+| `scene.json` → `capture` (optional) | `{video, poster, steps[{label,detail}], note}` — the room video and the build steps shown in setup | hand / pipeline |
 | `model.js` (optional) | `export function build(THREE) → Group`; child groups named by object id | hand-modeled (e.g. neon scene V5) |
 | `exercises.json` | `exercises[{id,name,cue,durationSec,media?{type:"video"\|"image",src,caption}}]` | hand / renderer |
 | `session.json` | `id`, `reminder "HH:MM"`, `stops[{spotId,exerciseId,title,durationSec}]` (route order) | hand |
@@ -65,9 +66,9 @@ All coordinates: meters, right-handed, **Y up, floor at y = 0**, the same frame 
 ### Session state machine
 
 ```
-upload ─finishUpload─▶ ready ─enterSpace─▶ home ─start─▶ navigate ─arrive─▶ move ─complete─▶ navigate … ─▶ done ─home─▶ home
-  ▲                                         │                               │
-  └──────────────── openUpload ─────────────┘                               └─exit─▶ home (progress kept)
+scan ─scanned─▶ build ─built─▶ ready ─enterSpace─▶ home ─start─▶ navigate ─arrive─▶ move ─complete─▶ navigate … ─▶ done ─home─▶ home
+(room video)  (rendering)    (final look)          │                                │
+                                                    └─ openUpload ─▶ upload ─▶ home   └─exit─▶ home (progress kept)
 ```
 
 Persisted per pack: `{ setupDone, screen, history{date:true}, today{date, done{spotId:seconds}} }`.
