@@ -1,6 +1,7 @@
 // App shell: load pack + uploaded media → store → render the current screen.
-//   ?pack=<id>   content pack under content/ (default "demo")
-//   ?reset       clear today's progress and setup state
+//   ?pack=<id>   content pack under content/ (default "office3d"; "demo" is the illustrated placeholder room)
+//   (default)    every load starts the flow from the beginning (demo mode); uploaded media are kept
+//   ?keep        keep progress and setup state across reloads
 import { loadPack, withMedia } from "./pack.js";
 import * as media from "./media.js";
 import { createStore } from "./store.js";
@@ -16,10 +17,9 @@ const SCREENS = { upload, ready, home, navigate, move, done };
 const params = new URLSearchParams(location.search);
 const root = document.getElementById("app");
 
-const base = await loadPack(params.get("pack") || "demo");
+const base = await loadPack(params.get("pack") || "office3d");
 let pack = withMedia(base, await media.loadUrls());
-const store = createStore(pack, { reset: params.has("reset") });
-if (params.has("reset")) history.replaceState(null, "", location.pathname + (params.get("pack") ? `?pack=${params.get("pack")}` : ""));
+const store = createStore(pack, { reset: !params.has("keep") });
 
 const ctx = {
   media,

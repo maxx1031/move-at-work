@@ -3,7 +3,8 @@ import { esc, icon, logo, nn, prime, segments } from "../ui.js";
 
 export default {
   render(v, pack) {
-    const scanned = pack.scene.origin !== "hand-authored";
+    const badge = { vggt: "3D SPACE REBUILT", modeled: "3D SPACE MODELED" }[pack.scene.origin] ?? "DEMO SPACE";
+    const nObjects = pack.scene.objects.length || pack.scene.model?.objects?.length || 0;
     const exName = (id) => pack.exercises.find((e) => e.id === id)?.name ?? id;
     const list = v.stops.map((s) => `<div class="stop-row">
   <div class="num mono">${nn(s.n)}</div>
@@ -17,8 +18,8 @@ export default {
   <p class="lead">We found ${v.total} spots around you. Set it up once, move anytime.</p>
   <div class="mapbox">
     <div data-map></div>
-    <div class="chip lime tl"><span class="dot"></span>${scanned ? "3D SPACE REBUILT" : "DEMO SPACE"}</div>
-    <div class="chip ghost tr">${pack.scene.objects.length} objects</div>
+    <div class="chip lime tl"><span class="dot"></span>${badge}</div>
+    <div class="chip ghost tr">${nObjects} objects</div>
     <div class="scan"></div>
   </div>
   <div class="col8">${list}</div>

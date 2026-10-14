@@ -1,3 +1,4 @@
 tools/
 content/*
 !content/demo/
+!content/office3d/

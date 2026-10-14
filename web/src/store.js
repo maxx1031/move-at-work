@@ -52,7 +52,16 @@ export function select(st, pack) {
   const remainingSec = stops.filter((s) => !s.done).reduce((t, s) => t + s.durationSec, 0);
   const activeSec = Object.values(st.today.done).reduce((t, x) => t + x, 0);
   return { screen: st.screen, stops, current, doneCount, total: stops.length, totalSec, remainingSec, activeSec,
-    week: week(st.history, st.today.date), reminder: pack.reminder };
+    week: week(st.history, st.today.date), streak: streak(st.history, st.today.date), reminder: pack.reminder };
+}
+
+// Consecutive completed days ending today (or yesterday, if today isn't done yet).
+function streak(history, today) {
+  const d = new Date(`${today}T12:00:00`);
+  if (!history[today]) d.setDate(d.getDate() - 1);
+  let n = 0;
+  while (history[dateKey(d)]) { n++; d.setDate(d.getDate() - 1); }
+  return n;
 }
 
 function week(history, today) {

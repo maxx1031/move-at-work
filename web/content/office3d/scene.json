@@ -1,0 +1,26 @@
+{
+  "sceneId": "office3d",
+  "sceneVersion": "v5",
+  "origin": "modeled",
+  "note": "Stylised model hand-built from the real-space video and the approved V3 floor plan (neon scene V5). Approximate layout, not measured.",
+  "units": "meters",
+  "upAxis": "Y",
+  "floorY": 0.0,
+  "wallHeight": 2.9,
+  "bounds": { "min": [-6.15, 0.0, -4.5], "max": [6.15, 3.3, 4.5] },
+  "entry": [-3.075, 0.0, 4.3],
+  "objects": [],
+  "model": {
+    "src": "model.js",
+    "camera": { "yaw": -0.28, "pitch": 0.95, "halfWidth": 8.3, "halfHeight": 5.6 },
+    "hideInTopView": ["street_window", "platform_column", "platform_red_curtain"],
+    "objects": [
+      { "id": "folding_chair_2.88_0.95", "kind": "chair" },
+      { "id": "platform_railing", "kind": "railing" },
+      { "id": "trapezoid_table", "kind": "table" },
+      { "id": "screen_and_lectern", "kind": "screen" },
+      { "id": "window_curved_sofa", "kind": "sofa" },
+      { "id": "platform_red_curtain", "kind": "curtain" }
+    ]
+  }
+}

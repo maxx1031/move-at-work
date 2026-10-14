@@ -39,12 +39,14 @@ All coordinates: meters, right-handed, **Y up, floor at y = 0**, the same frame 
 
 | File | Key fields | Producer |
 |---|---|---|
-| `scene.json` | `sceneId`, `origin` (`"vggt"` \| `"hand-authored"`), `bounds{min,max}`, `wallHeight`, `entry[x,y,z]`, `objects[{id,kind,position(bottom-centre),size}]`, `topdown{file,cellMeters,originXZ,sizePx}`, `cameras[]` | build_scene.py / hand |
-| `spots.json` | `spots[{id,label,shortName,objectId,position,headingRadians,clearanceRadius,reviewed,exerciseIds,tip}]` | scene editor |
+| `scene.json` | `sceneId`, `origin` (`"vggt"` \| `"modeled"` \| `"hand-authored"`), `model?{src,camera,hideInTopView,objects}`, `bounds{min,max}`, `wallHeight`, `entry[x,y,z]`, `objects[{id,kind,position(bottom-centre),size}]`, `topdown{file,cellMeters,originXZ,sizePx}`, `cameras[]` | build_scene.py / hand |
+| `spots.json` | `spots[{id,label,shortName,objectId,position,headingRadians,clearanceRadius,reviewed,exerciseIds,tip,photo?}]` | scene editor |
+| `model.js` (optional) | `export function build(THREE) → Group`; child groups named by object id | hand-modeled (e.g. neon scene V5) |
 | `exercises.json` | `exercises[{id,name,cue,durationSec,media?{type:"video"\|"image",src,caption}}]` | hand / renderer |
 | `session.json` | `id`, `reminder "HH:MM"`, `stops[{spotId,exerciseId,title,durationSec}]` (route order) | hand |
 
-`content/demo` is a hand-authored placeholder traced from `01_UI.html`. Other packs are local only (gitignored).
+`content/office3d` (default) is the stylised Three.js model of the real office from `final_rendering_effect.html`, with real-scene move videos.
+`content/demo` is the illustrated placeholder room traced from `01_UI.html`. Other packs are local only (gitignored).
 
 ## Web app (`web/`, no build step)
 
@@ -54,7 +56,8 @@ All coordinates: meters, right-handed, **Y up, floor at y = 0**, the same frame 
 | `src/media.js` | `File` ↔ IndexedDB → object URLs | Keys `spot:<id>` (photo), `exercise:<id>` (video). Swap for a server store later. |
 | `src/store.js` | `(state, action, pack)` → state; `select()` → view model | Pure reducer + localStorage (per pack). No DOM. |
 | `src/map/isoMap.js` | `(scene, view)` → SVG string | Pure. Draws room, `topdown.png`, object boxes, route, spots, "you". |
-| `src/map/index.js` | `mountMap(el, scene, view)` → cleanup | Seam for a future Three.js renderer. |
+| `src/map/threeMap.js` | `(el, scene, view)` → cleanup | Used when `scene.model` exists. Loads `model.js` once and shares one WebGL renderer; spots, route, walk leg and labels come from `view`. |
+| `src/map/index.js` | `mountMap(el, scene, view)` → cleanup | Picks the Three.js or SVG renderer. Three.js is loaded only when needed. |
 | `src/screens/*.js` | `render(view, pack)` → HTML, `map(view)` → map view, `mount(root, view, ctx)` → cleanup | One file per screen. Buttons use `data-action`. |
 | `src/main.js` | wires everything | Re-renders the current screen on every state change. |
 | `tools/scene-editor.html` | point cloud → `spots.json` | Three.js neon viewer; same-camera "Enter workout mode" preview. |

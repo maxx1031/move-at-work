@@ -8,5 +8,8 @@ work/
 web/scenes/
 web/content/*
 !web/content/demo/
+!web/content/office3d/
+# real-scene photos/videos are deployed to Vercel but kept out of the public repo
+web/content/office3d/media/
 .vercel
 __pycache__/
