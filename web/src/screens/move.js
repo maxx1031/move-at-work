@@ -1,4 +1,4 @@
-// UI 04 · Move: demo media (uploaded video, illustration, or placeholder) + a training timer.
+// UI 04 · Move: demo media (video, still poses that swap, illustration, or placeholder) + a training timer.
 // The timer is independent of the video: a short clip loops while the move lasts durationSec.
 import { esc, icon, mmss, nn, segments } from "../ui.js";
 
@@ -12,6 +12,7 @@ function media(m, ex) {
       <button class="vbtn loop on" data-loop aria-label="Loop">${icon.loop}</button>
     </div>`;
   if (m?.type === "image") return `<img class="media" src="${esc(m.src)}" alt="">`;
+  if (m?.type === "stills") return `<div class="media stills">${m.src.map((s) => `<img src="${esc(s)}" alt="">`).join("")}</div>`;
   return `<div class="media placeholder"><div class="h1" style="font-size:30px">${esc(ex.name)}</div><div class="muted s13">No demo video yet · add one in setup</div></div>`;
 }
 

@@ -7,8 +7,8 @@
       "cue": "Rest the top of your back foot on the chair seat. Lower slowly, keep your front knee over your ankle, then rise. Switch legs halfway.",
       "media": {
         "type": "video",
-        "src": "media/split_squat.mp4",
-        "caption": "Real-scene video"
+        "src": "media/coach_split_squat.mp4",
+        "caption": "AI coach · generated from a real-scene video"
       }
     },
     {
@@ -17,9 +17,12 @@
       "durationSec": 120,
       "cue": "Rest one heel on the rail, keep both legs long and lean forward gently from the hips. Hold, breathe, then switch legs.",
       "media": {
-        "type": "video",
-        "src": "media/railing_leg_stretch.mp4",
-        "caption": "Real-scene video"
+        "type": "stills",
+        "src": [
+          "media/coach_railing_1.jpg",
+          "media/coach_railing_2.jpg"
+        ],
+        "caption": "AI coach · stretch poses"
       }
     },
     {
@@ -29,8 +32,8 @@
       "cue": "Stand beside the table, arms reaching forward. Sit back and down on one leg while the other leg reaches out in front, then stand up. Touch the table edge for balance if you need to. Switch legs halfway.",
       "media": {
         "type": "video",
-        "src": "media/table_single_leg_squat.mp4",
-        "caption": "Real-scene video"
+        "src": "media/coach_single_leg_squat.mp4",
+        "caption": "AI coach · generated from a real-scene video"
       }
     }
   ]

@@ -22,7 +22,8 @@ export async function loadPack(id) {
   if (scene.capture) scene.capture = { ...scene.capture, video: base + scene.capture.video, poster: scene.capture.poster && base + scene.capture.poster };
   scene.objects ??= [];
 
-  const exercises = exDoc.exercises.map((e) => (e.media ? { ...e, media: { ...e.media, src: base + e.media.src } } : e));
+  const rel = (src) => (Array.isArray(src) ? src.map((s) => base + s) : base + src);  // stills: several images
+  const exercises = exDoc.exercises.map((e) => (e.media ? { ...e, media: { ...e.media, src: rel(e.media.src) } } : e));
   const spots = spotDoc.spots.map((s) => (s.photo ? { ...s, photo: base + s.photo } : s));
   const spotById = new Map(spots.map((s) => [s.id, s]));
   const exById = new Map(exercises.map((e) => [e.id, e]));

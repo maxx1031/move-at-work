@@ -21,9 +21,10 @@ export default {
       preview: s.spot.photo && `<img src="${esc(s.spot.photo)}" alt="">`,
     })).join("");
     const moves = v.stops.map((s) => row({
-      key: `exercise:${s.exercise.id}`, title: s.exercise.name, uploaded: !!s.exercise.media?.uploaded, sample: s.exercise.media?.type === "video", accept: "video/*",
+      key: `exercise:${s.exercise.id}`, title: s.exercise.name, uploaded: !!s.exercise.media?.uploaded, sample: !!s.exercise.media, accept: "video/*",
       hint: "Record or pick a short demo video",
-      preview: s.exercise.media?.type === "video" && `<video src="${esc(s.exercise.media.src)}#t=0.1" muted playsinline preload="metadata"></video>`,
+      preview: s.exercise.media?.type === "video" ? `<video src="${esc(s.exercise.media.src)}#t=0.1" muted playsinline preload="metadata"></video>`
+        : s.exercise.media?.type === "stills" ? `<img src="${esc(s.exercise.media.src[0])}" alt="">` : "",
     })).join("");
     return `<div class="screen">
   <div class="row">${logo()}<div class="mono muted s11">Photos &amp; videos</div></div>
