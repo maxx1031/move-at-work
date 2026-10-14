@@ -2,6 +2,7 @@
 //   ?pack=<id>   content pack under content/ (default "office3d"; "demo" is the illustrated placeholder room)
 //   (default)    every load starts the flow from the beginning (demo mode); uploaded media are kept
 //   ?keep        keep progress and setup state across reloads
+//   ?screen=<s>  open on a given screen by replaying the normal actions (used by storyboard.html)
 import { loadPack, withMedia } from "./pack.js";
 import * as media from "./media.js";
 import { createStore } from "./store.js";
@@ -45,5 +46,14 @@ root.addEventListener("click", (e) => {
   const el = e.target.closest("[data-action]");
   if (el) store.dispatch({ type: el.dataset.action });
 });
+// Replays the real flow up to a screen, so the state machine stays the only way to change state.
+function jumpTo(screen) {
+  const steps = ["finishUpload", "enterSpace", "start", "arrive"];
+  const n = { upload: 0, ready: 1, home: 2, navigate: 3, move: 4, done: 2 }[screen] ?? 0;
+  steps.slice(0, n).forEach((type) => store.dispatch({ type }));
+  if (screen === "done") pack.stops.forEach((s) => store.dispatch({ type: "complete", spotId: s.spot.id, seconds: s.durationSec }));
+}
+if (params.has("screen")) jumpTo(params.get("screen"));
+
 store.subscribe(render);
 render();

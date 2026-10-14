@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Just Standup · 界面总览</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0B0F0E; --card: #121917; --line: rgba(94,230,208,.14); --text: #EDF3EF; --muted: #8FA39A; --soft: #C9D6D0;
+    --cyan: #5EE6D0; --lime: #C6FF3D; --mono: "JetBrains Mono", ui-monospace, monospace; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg) radial-gradient(rgba(94,230,208,.07) 1px, transparent 1px) 0 0 / 18px 18px;
+    color: var(--text); font: 15px/1.6 "Space Grotesk", -apple-system, "PingFang SC", sans-serif; }
+  header { max-width: 1400px; margin: 0 auto; padding: 48px 32px 24px; }
+  .logo { display: inline-block; font: 22px/1 Anton, sans-serif; letter-spacing: .02em; color: var(--bg); background: var(--lime);
+    padding: 6px 10px 5px; border-radius: 6px; transform: skewX(-8deg); box-shadow: 0 0 20px rgba(198,255,61,.35); }
+  h1 { font: 400 52px/1 Anton, sans-serif; text-transform: uppercase; margin: 24px 0 12px; }
+  h1 em { font-style: normal; color: var(--lime); }
+  .intro { max-width: 760px; color: var(--soft); margin: 0; }
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; font: 12px var(--mono); }
+  .flow a { color: var(--cyan); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+  .flow a:hover { border-color: var(--lime); color: var(--lime); }
+  .flow span { color: var(--muted); align-self: center; }
+  main { max-width: 1400px; margin: 0 auto; padding: 8px 32px 64px; display: grid; gap: 28px;
+    grid-template-columns: repeat(auto-fill, minmax(620px, 1fr)); }
+  .shot { display: grid; grid-template-columns: 312px 1fr; gap: 24px; padding: 22px; background: rgba(18,25,23,.85);
+    border: 1px solid var(--line); border-radius: 28px; scroll-margin-top: 16px; }
+  .phone { width: 312px; height: 675px; border-radius: 36px; overflow: hidden; position: relative; background: var(--bg);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 20px 50px rgba(0,0,0,.5); }
+  .phone iframe { width: 390px; height: 844px; border: 0; transform: scale(.8); transform-origin: 0 0; display: block; }
+  .num { font: 500 12px var(--mono); letter-spacing: .1em; color: var(--lime); }
+  h2 { font: 400 30px/1.05 Anton, sans-serif; text-transform: uppercase; margin: 8px 0 4px; }
+  .en { font: 12px var(--mono); color: var(--muted); margin-bottom: 14px; }
+  .desc p { margin: 0 0 12px; color: var(--soft); }
+  dl { margin: 16px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 13px; }
+  dt { font: 11px var(--mono); color: var(--cyan); padding-top: 3px; white-space: nowrap; }
+  dd { margin: 0; color: var(--soft); }
+  code { font: 12px var(--mono); color: var(--lime); }
+  .open { display: inline-block; margin-top: 18px; font: 12px var(--mono); color: var(--cyan); }
+  footer { max-width: 1400px; margin: 0 auto; padding: 0 32px 48px; color: var(--muted); font-size: 13px; }
+  @media (max-width: 720px) {
+    header, main, footer { padding-left: 16px; padding-right: 16px; }
+    h1 { font-size: 38px; }
+    main { grid-template-columns: 1fr; }
+    .shot { grid-template-columns: 1fr; justify-items: center; padding: 16px; }
+    .desc { justify-self: stretch; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">JUST STANDUP</div>
+  <h1>界面总览 · <em>7 个页面</em></h1>
+  <p class="intro">把熟悉的办公室变成一条 5 分钟的运动路线。下面每个手机框都是正在运行的 app（不是截图）：3D 地图可以拖动旋转，视频会播放，按钮能点。页面按真实使用顺序排列：首次设置（01–02）→ 每日运动（03–05）→ 完成（06–07）。</p>
+  <nav class="flow" id="flow"></nav>
+</header>
+<main id="shots"></main>
+<footer>本地预览：<code>cd move-at-work/web &amp;&amp; python3 -m http.server 5173</code>，然后打开 <code>http://localhost:5173/storyboard.html</code>。单独体验完整流程请打开 <a class="open" href="./">app 首页</a>。</footer>
+
+<script type="module">
+// Each entry renders the real app at one screen via ?screen=… (see src/main.js). `after` runs inside the frame once it's ready.
+const SHOTS = [
+  {
+    screen: "upload", title: "带入你的空间", en: "Bring your space in",
+    body: [
+      "首次设置的第一步。给每个运动点位拍一张照片，给每个动作上传一段示范视频。",
+      "已经内置了示例素材（三张点位照片、两段真人动作视频），标注为「Sample included」，点一下就能换成自己拍的。也可以直接跳过。",
+    ],
+    action: "点选拍照或录像 → 「Build my space」",
+    data: "上传的文件只存在这台手机（IndexedDB），不经过服务器",
+    code: "screens/upload.js · media.js",
+  },
+  {
+    screen: "ready", title: "空间就绪", en: "Right here. Your gym.",
+    body: [
+      "展示建好的办公室 3D 场景：弧形平台和栏杆、电话亭、折叠椅、梯形桌、窗边沙发。地图上标出找到的 3 个运动点。",
+      "下方列出每个点位适合的动作和时长。这个场景是根据实拍视频和确认过的平面图手工搭的，不是自动精确重建，所以标签写的是「3D SPACE MODELED」。",
+    ],
+    action: "拖动地图旋转查看 → 「Enter my space」",
+    data: "scene.json + model.js（3D 模型）+ spots.json（点位）",
+    code: "screens/ready.js · map/threeMap.js",
+  },
+  {
+    screen: "home", title: "每日首页", en: "Stand up. Just 5 min.",
+    body: [
+      "每天打开 app 看到的页面。今天的路线是 3 站、共 5 分钟：椅子 2 分钟 → 平台栏杆 2 分钟 → 梯形桌 1 分钟。",
+      "地图上下一站会闪烁，右下角显示已点亮几站；下面是本周工作日的打卡记录。右上角是提醒时间和设置（回到上传页）。",
+    ],
+    action: "「Start my 5 minutes」开始；中途退出后显示「Continue · stop N」",
+    data: "session.json（路线和时长）+ 本地进度（localStorage）",
+    code: "screens/home.js · store.js",
+  },
+  {
+    screen: "navigate", title: "前往下一站", en: "To the chair.",
+    body: [
+      "地图自动拉近到「你」和目标点之间，荧光路线指引怎么走，目标家具会高亮。挡视线的立柱和窗帘会自动隐藏。",
+      "下方卡片显示点位的真实照片、要做的动作和安全提示。不做自动定位：用户到了以后手动确认。",
+    ],
+    action: "走到点位 → 「I'm here · Show the move」",
+    data: "起点 = 入口（scene.entry）或上一站；终点 = 当前点位",
+    code: "screens/navigate.js",
+  },
+  {
+    screen: "move", title: "动作示范", en: "Like this.",
+    body: [
+      "循环播放在这个点位实拍的真人动作视频（这里是用椅子做后脚支撑分腿蹲），可以静音、暂停、关闭循环。",
+      "训练计时和视频是分开的：几秒的示范视频循环播放，训练按设定的 2 分钟计时，可以暂停。动作要点写在计时下面。",
+    ],
+    action: "跟着做 → 「Done with this move」点亮这一站，进入下一站；左上角 × 中途退出并保留进度",
+    data: "exercises.json（动作、视频、要点）；同一站重复点完成只算一次",
+    code: "screens/move.js",
+  },
+  {
+    screen: "done", title: "完成庆祝", en: "Workout complete!",
+    body: [
+      "三站全部点亮后出现：吉祥物、彩带、提示音和震动，XP / 运动时长 / 点位数会滚动计数。",
+    ],
+    action: "「Continue」进入连续打卡页",
+    data: "运动时长 = 每站实际计时之和",
+    code: "screens/done.js",
+  },
+  {
+    screen: "done", after: (doc) => doc.querySelector("[data-next]")?.click(), title: "连续打卡", en: "1 day streak!",
+    body: [
+      "显示连续打卡天数和本周记录、下次提醒时间，下面是所有点位都已点亮的 3D 地图。",
+      "提醒目前只是显示时间，还没有接入真实的系统通知。",
+    ],
+    action: "「Back to my space」回到首页（显示今日已完成）",
+    data: "打卡记录按日期保存在本机；新的一天自动重置当天进度",
+    code: "screens/done.js · store.js（streak）",
+  },
+];
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+const shots = document.getElementById("shots"), flow = document.getElementById("flow");
+
+SHOTS.forEach((s, i) => {
+  const n = String(i + 1).padStart(2, "0"), id = `s${n}`, src = `./?screen=${s.screen}`;
+  flow.insertAdjacentHTML("beforeend", `${i ? "<span>→</span>" : ""}<a href="#${id}">${n} ${esc(s.title)}</a>`);
+  shots.insertAdjacentHTML("beforeend", `<section class="shot" id="${id}">
+    <div class="phone"><iframe src="${src}" title="${esc(s.title)}" loading="lazy"></iframe></div>
+    <div class="desc">
+      <div class="num">${n} / ${String(SHOTS.length).padStart(2, "0")}</div>
+      <h2>${esc(s.title)}</h2>
+      <div class="en">${esc(s.en)}</div>
+      ${s.body.map((p) => `<p>${esc(p)}</p>`).join("")}
+      <dl>
+        <dt>用户操作</dt><dd>${esc(s.action)}</dd>
+        <dt>数据</dt><dd>${esc(s.data)}</dd>
+        <dt>代码</dt><dd><code>${esc(s.code)}</code></dd>
+      </dl>
+      <a class="open" href="${src}" target="_blank">单独打开这个页面 ↗</a>
+    </div>
+  </section>`);
+  if (s.after) {
+    const frame = shots.lastElementChild.querySelector("iframe");
+    frame.addEventListener("load", () => {
+      const doc = frame.contentDocument;
+      const wait = setInterval(() => { if (doc.querySelector("[data-next]")) { clearInterval(wait); s.after(doc); } }, 100);
+    });
+  }
+});
+</script>
+</body>
+</html>

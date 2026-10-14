@@ -4,7 +4,7 @@ import { esc, icon, logo, segments } from "../ui.js";
 function row({ key, title, uploaded, sample, preview, accept, hint }) {
   return `<div class="up-row">
   <label class="up-pick">
-    <span class="up-thumb">${preview ?? (accept.startsWith("image") ? icon.camera : icon.video)}</span>
+    <span class="up-thumb">${preview || (accept.startsWith("image") ? icon.camera : icon.video)}</span>
     <span class="up-text"><b>${esc(title)}</b><small class="${uploaded ? "ok" : ""}">${uploaded ? "Added ✓ · tap to change" : sample ? "Sample included · tap to replace" : hint}</small></span>
     <input type="file" accept="${accept}" data-key="${key}" hidden>
   </label>
