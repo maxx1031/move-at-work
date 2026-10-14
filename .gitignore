@@ -3,3 +3,10 @@ work/
 .env
 .env.*
 !.env.example
+
+# local scene assets (office photos, point clouds) stay out of the public repo
+web/scenes/
+web/content/*
+!web/content/demo/
+.vercel
+__pycache__/

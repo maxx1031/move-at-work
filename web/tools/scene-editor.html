@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Just Standup · Scene editor</title>
+<style>
+  :root {
+    --bg: #0B0F0E; --panel: #0E1412; --line: #1d2a27; --text: #d8efe9; --muted: #6f8a84;
+    --cyan: #5EE6D0; --lime: #C6FF3D;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text);
+    font: 13px/1.4 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; overflow: hidden; }
+  #stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  #frame { position: relative; width: 100%; height: 100%; }
+  #frame canvas, #photo { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #photo { object-fit: fill; pointer-events: none; opacity: 0; transition: none; }
+  #bar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 6px;
+    align-items: center; z-index: 5; pointer-events: none; }
+  #bar > * { pointer-events: auto; }
+  button, select { background: var(--panel); color: var(--text); border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  button:hover { border-color: var(--cyan); }
+  button.on { border-color: var(--lime); color: var(--lime); }
+  button.primary { background: var(--lime); color: #0B0F0E; border-color: var(--lime); font-weight: 600; }
+  #info { position: absolute; left: 12px; bottom: 12px; right: 12px; z-index: 5; color: var(--muted);
+    font-size: 12px; pointer-events: none; }
+  #spots { position: absolute; right: 12px; top: 56px; z-index: 5; background: rgba(14,20,18,.85);
+    border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; min-width: 180px; max-width: 260px; }
+  #spots h3 { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 6px; }
+  #spots li { list-style: none; display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; }
+  #spots li .done { color: var(--lime); }
+  #spots li button { padding: 0 8px; font-size: 11px; }
+  .sep { width: 1px; height: 20px; background: var(--line); }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="stage"><div id="frame"><img id="photo" alt=""></div></div>
+<div id="bar">
+  <button id="mMap" class="on">地图</button>
+  <button id="mPhoto">同机位</button>
+  <select id="camSel" hidden></select>
+  <button id="enter" class="primary" hidden>Enter workout mode</button>
+  <span class="sep"></span>
+  <button id="addSpot">＋ 添加点位</button>
+  <button id="export">导出 spots.json</button>
+  <span class="sep"></span>
+  <label style="color:var(--muted)">顶部裁切 <input id="ceil" type="range" min="0.5" max="3.2" step="0.05" value="2.1"></label>
+  <label style="color:var(--muted)">辉光 <input id="bloom" type="range" min="0" max="2" step="0.05" value="0.8"></label>
+</div>
+<div id="spots"><h3>今日点位</h3><ul id="spotList"></ul></div>
+<div id="info">加载中…</div>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+
+const params = new URLSearchParams(location.search);
+const SCENE = `../content/${params.get("pack") || "office"}/`;
+const $ = (id) => document.getElementById(id);
+const frame = $("frame"), photo = $("photo"), info = $("info");
+
+const LIME = new THREE.Color("#C6FF3D"), CYAN = new THREE.Color("#5EE6D0");
+
+// ---------- renderer ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setClearColor(0x0B0F0E, 1);
+frame.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+
+const mapCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.01, 100);
+const photoCam = new THREE.PerspectiveCamera(60, 1, 0.02, 100);
+let camera = mapCam, mode = "map";
+const controls = new OrbitControls(mapCam, renderer.domElement);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI * 0.42;
+controls.screenSpacePanning = true;
+
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass(scene, camera);
+const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.8, 0.45, 0.35);
+composer.addPass(renderPass); composer.addPass(bloom); composer.addPass(new OutputPass());
+
+// ---------- point cloud with photo -> neon blend ----------
+const pointMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uMix: { value: 1 }, uSize: { value: 2.0 }, uPx: { value: 1 }, uPersp: { value: 0 },
+    uCeil: { value: 2.1 }, uCyan: { value: new THREE.Vector3(CYAN.r, CYAN.g, CYAN.b) }, uTime: { value: 0 },
+  },
+  vertexShader: /* glsl */`
+    uniform float uMix, uSize, uPx, uPersp, uCeil, uTime; uniform vec3 uCyan;
+    attribute vec3 color; varying vec3 vCol; varying float vHide;
+    void main() {
+      vec4 mv = modelViewMatrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * mv;
+      float y = position.y;
+      vHide = (uMix > 0.5 && y > uCeil) ? 1.0 : 0.0;
+      float lum = dot(color, vec3(0.299, 0.587, 0.114));
+      vec3 floorC = vec3(0.06, 0.11, 0.10) * (0.6 + 0.8 * lum);
+      vec3 objC = mix(uCyan * 0.18, uCyan * 0.9, smoothstep(0.05, 1.3, y)) * (0.55 + 0.7 * lum);
+      vec3 neon = y < 0.06 ? floorC : objC;
+      vCol = mix(color, neon, uMix);
+      float px = uPersp > 0.5 ? uSize * uPx / max(-mv.z, 0.05) : uSize;
+      gl_PointSize = max(px, 1.0);
+    }`,
+  fragmentShader: /* glsl */`
+    varying vec3 vCol; varying float vHide;
+    void main() {
+      if (vHide > 0.5) discard;
+      vec2 d = gl_PointCoord - 0.5; if (dot(d, d) > 0.25) discard;
+      gl_FragColor = vec4(vCol, 1.0);
+    }`,
+});
+
+// faint floor grid
+const grid = new THREE.GridHelper(40, 80, 0x1d3a35, 0x14211e);
+grid.position.y = 0.001;
+scene.add(grid);
+
+// ---------- spots & route ----------
+const spotGroup = new THREE.Group(); scene.add(spotGroup);
+let spots = [];
+let spotDoc = { sceneId: "", sceneVersion: "v1", units: "meters", upAxis: "Y", spots: [] };
+
+function makeSpotMesh(s) {
+  const g = new THREE.Group();
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.32, 0.4, 48),
+    new THREE.MeshBasicMaterial({ color: LIME, transparent: true, side: THREE.DoubleSide }));
+  ring.rotation.x = -Math.PI / 2;
+  const pulse = ring.clone(); pulse.material = ring.material.clone();
+  const disk = new THREE.Mesh(new THREE.CircleGeometry(0.3, 48),
+    new THREE.MeshBasicMaterial({ color: LIME, transparent: true, opacity: 0.12, side: THREE.DoubleSide }));
+  disk.rotation.x = -Math.PI / 2;
+  const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.6, 8),
+    new THREE.MeshBasicMaterial({ color: LIME, transparent: true, opacity: 0.5 }));
+  beam.position.y = 0.8;
+  g.add(disk, ring, pulse, beam);
+  g.position.set(s.position[0], 0.02, s.position[2]);
+  g.userData = { spot: s, ring, pulse, disk, beam };
+  return g;
+}
+
+const routeMat = new THREE.ShaderMaterial({
+  uniforms: { uTime: { value: 0 }, uColor: { value: new THREE.Vector3(CYAN.r, CYAN.g, CYAN.b) } },
+  vertexShader: `attribute float lineDistance; varying float vD;
+    void main(){ vD = lineDistance; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+  fragmentShader: `uniform float uTime; uniform vec3 uColor; varying float vD;
+    void main(){ if (fract(vD * 4.0 - uTime * 1.5) > 0.55) discard; gl_FragColor = vec4(uColor, 1.0); }`,
+  transparent: true,
+});
+let routeLine = null;
+
+function rebuildSpots() {
+  spotGroup.clear();
+  spots.forEach((s) => spotGroup.add(makeSpotMesh(s)));
+  if (routeLine) { scene.remove(routeLine); routeLine.geometry.dispose(); routeLine = null; }
+  if (spots.length >= 2) {
+    const pts = spots.map((s) => new THREE.Vector3(s.position[0], 0.03, s.position[2]));
+    const curve = new THREE.CatmullRomCurve3(pts, false, "centripetal");
+    routeLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(spots.length * 30)), routeMat);
+    routeLine.computeLineDistances();
+    scene.add(routeLine);
+  }
+  const ul = $("spotList"); ul.innerHTML = "";
+  if (!spots.length) ul.innerHTML = `<li style="color:var(--muted)">点「添加点位」后点击地面</li>`;
+  spots.forEach((s, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="${s.done ? "done" : ""}">${s.done ? "●" : "○"} ${i + 1}. ${s.id}</span>`;
+    const del = document.createElement("button"); del.textContent = "删除";
+    del.onclick = () => { spots.splice(i, 1); rebuildSpots(); };
+    li.append(del); ul.append(li);
+  });
+}
+
+// ---------- picking ----------
+let adding = false;
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+let downAt = null;
+renderer.domElement.addEventListener("pointerdown", (e) => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener("pointerup", (e) => {
+  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return;
+  const r = renderer.domElement.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects(spotGroup.children, true)[0];
+  if (hit && !adding) {
+    let o = hit.object; while (o.parent !== spotGroup) o = o.parent;
+    o.userData.spot.done = !o.userData.spot.done; rebuildSpots(); return;
+  }
+  if (!adding) return;
+  const p = new THREE.Vector3();
+  if (!ray.ray.intersectPlane(floorPlane, p)) return;
+  const n = spots.length + 1;
+  spots.push({ id: `spot_${String(n).padStart(2, "0")}`, label: `Spot ${n}`, shortName: "spot", objectId: "", position: [+p.x.toFixed(3), 0, +p.z.toFixed(3)],
+    headingRadians: 0, clearanceRadius: 0.7, reviewed: false, exerciseIds: [], done: false });
+  rebuildSpots();
+});
+
+$("addSpot").onclick = () => { adding = !adding; $("addSpot").classList.toggle("on", adding); };
+$("export").onclick = () => {
+  const doc = { ...spotDoc, spots: spots.map(({ done, ...s }) => s) };
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(doc, null, 2)], { type: "application/json" }));
+  a.download = "spots.json"; a.click();
+};
+$("ceil").oninput = (e) => (pointMat.uniforms.uCeil.value = +e.target.value);
+$("bloom").oninput = (e) => (bloom.strength = +e.target.value);
+
+// ---------- modes ----------
+let meta = null, bounds = null, mixTarget = 1;
+
+function layout() {
+  const W = innerWidth, H = innerHeight;
+  let w = W, h = H;
+  if (mode === "photo") {
+    const a = photoCam.aspect;
+    if (W / H > a) { w = H * a; } else { h = W / a; }
+  }
+  frame.style.width = `${w}px`; frame.style.height = `${h}px`;
+  renderer.setSize(w, h); composer.setSize(w, h);
+  bloom.resolution.set(w, h);
+  pointMat.uniforms.uPx.value = h * renderer.getPixelRatio() * 0.5;
+  if (mode === "map") {
+    const aspect = w / h;
+    mapCam.left = -mapCam.top * aspect; mapCam.right = mapCam.top * aspect;
+    mapCam.updateProjectionMatrix();
+  } else photoCam.updateProjectionMatrix();
+}
+
+function fitMap() {
+  const sx = bounds.max[0] - bounds.min[0], sz = bounds.max[2] - bounds.min[2];
+  const half = Math.max(sx / (innerWidth / innerHeight), sz) * 0.62;
+  mapCam.top = half; mapCam.bottom = -half;
+  mapCam.position.set(0, 20, 20 * Math.tan(0.35));
+  controls.target.set(0, 0, 0);
+  controls.update();
+}
+
+function setMode(m) {
+  mode = m;
+  $("mMap").classList.toggle("on", m === "map");
+  $("mPhoto").classList.toggle("on", m === "photo");
+  $("camSel").hidden = $("enter").hidden = m !== "photo";
+  controls.enabled = m === "map";
+  camera = m === "map" ? mapCam : photoCam;
+  renderPass.camera = camera;
+  pointMat.uniforms.uPersp.value = m === "photo" ? 1 : 0;
+  pointMat.uniforms.uSize.value = m === "photo" ? 0.012 : 2.0;
+  grid.visible = m === "map";
+  if (m === "photo") { applyPhotoCam(+$("camSel").value); setNeon(false, true); }
+  else { photo.style.opacity = 0; setNeon(true, true); }
+  layout();
+}
+
+function applyPhotoCam(i) {
+  const c = meta.cameras[i];
+  photoCam.position.fromArray(c.position);
+  photoCam.quaternion.fromArray(c.quaternion);
+  photoCam.fov = c.fovY; photoCam.aspect = c.aspect;
+  photo.src = SCENE + c.file;
+  layout();
+}
+
+function setNeon(on, instant) {
+  mixTarget = on ? 1 : 0;
+  if (instant) pointMat.uniforms.uMix.value = mixTarget;
+  $("enter").textContent = on ? "Back to office" : "Enter workout mode";
+  if (instant) photo.style.opacity = mode === "photo" && !on ? 1 : 0;
+}
+
+$("mMap").onclick = () => setMode("map");
+$("mPhoto").onclick = () => setMode("photo");
+$("camSel").onchange = (e) => { applyPhotoCam(+e.target.value); setNeon(false, true); };
+$("enter").onclick = () => setNeon(mixTarget < 0.5, false);
+addEventListener("resize", () => { if (bounds) { layout(); if (mode === "map") fitMap(); } });
+
+// ---------- load ----------
+const [m, sd] = await Promise.all([
+  fetch(SCENE + "scene.json").then((r) => r.json()),
+  fetch(SCENE + "spots.json").then((r) => (r.ok ? r.json() : null)).catch(() => null),
+]);
+meta = m; bounds = m.bounds;
+if (sd) { spotDoc = sd; spots = sd.spots.map((s) => ({ ...s, done: false })); }
+spotDoc.sceneId = m.sceneId;
+m.cameras.forEach((c, i) => $("camSel").add(new Option(`照片 ${i + 1} · ${c.file.split("/").pop()}`, i)));
+
+const geom = await new PLYLoader().loadAsync(SCENE + "points.ply");
+scene.add(new THREE.Points(geom, pointMat));
+info.textContent = `${m.sceneId} · ${m.numPoints.toLocaleString()} 点 · ${(bounds.max[0] - bounds.min[0]).toFixed(1)}×${(bounds.max[2] - bounds.min[2]).toFixed(1)} m · 尺度：${m.scaleSource}`;
+rebuildSpots();
+setMode("map"); fitMap();
+
+// ---------- loop ----------
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const t = clock.getElapsedTime();
+  const u = pointMat.uniforms.uMix;
+  u.value += (mixTarget - u.value) * 0.04;
+  if (mode === "photo") {
+    photo.style.opacity = Math.max(0, 1 - u.value * 1.6).toFixed(3);
+    renderer.setClearColor(new THREE.Color(0x2a2a2a).lerp(new THREE.Color(0x0B0F0E), u.value), 1);
+  } else renderer.setClearColor(0x0B0F0E, 1);
+  routeMat.uniforms.uTime.value = t;
+  spotGroup.children.forEach((g, i) => {
+    const { ring, pulse, disk, beam, spot } = g.userData;
+    const k = (t * 0.8 + i * 0.3) % 1;
+    pulse.scale.setScalar(1 + k * 1.2); pulse.material.opacity = (1 - k) * 0.7;
+    const done = spot.done;
+    ring.material.color.copy(done ? LIME : CYAN);
+    disk.material.opacity = done ? 0.55 : 0.1;
+    beam.visible = !done;
+    spotGroup.visible = mode === "map" || u.value > 0.5;
+  });
+  controls.update();
+  composer.render();
+});
+</script>
+</body>
+</html>

@@ -2,12 +2,35 @@
 
 A workplace movement demo: turn a familiar office into a personalized five-minute workout route.
 
-## Current design and technical plan
+## Run the web app
+
+```bash
+cd web && python3 -m http.server 5173     # then open http://localhost:5173
+```
+
+No build step: plain ES modules. On a phone, open the deployed URL and *Add to Home Screen*.
+
+- `?pack=<id>` loads `web/content/<id>/` (default `demo`).
+- `?reset` clears today's progress and setup state.
+- Photos and videos you upload in the app stay on that device (IndexedDB).
+
+## Architecture
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for module inputs/outputs, the content-pack contract and the session state machine.
+
+```
+pipeline/   offline: video/photos → frames → VGGT → scene.json + points.ply   (Python)
+web/
+  content/<id>/   content pack: scene / spots / exercises / session JSON + media
+  src/            pack.js · media.js · store.js · map/ · screens/ · main.js
+  tools/          scene-editor.html (place spots on a reconstruction)
+docs/       TECHNICAL_DESIGN.md (中文), ARCHITECTURE.md, reference/01_UI.html
+```
+
+## Design references
 
 - [Technical design (中文)](docs/TECHNICAL_DESIGN.md): reconstruction, neon rendering, motion demonstrations, data contracts, and demo milestones.
-- [Latest approved UI — 01_UI.html](docs/reference/01_UI.html): download the HTML file and open it in a browser to view the five-screen design. GitHub displays source rather than running the HTML.
-
-The SVG screens below are earlier drafts; the linked HTML is the current UI reference.
+- [Latest approved UI — 01_UI.html](docs/reference/01_UI.html): download and open in a browser. The web app implements its five screens.
 
 ## User journey
 
@@ -19,16 +42,13 @@ The SVG screens below are earlier drafts; the linked HTML is the current UI refe
 
 The first four steps are primarily setup work. Daily sessions combine prepared movements into a five-minute route.
 
-## UI draft
-
-Eight static mobile screens cover setup, the office map, a daily session, arrival, movement demonstration, spot completion, and session completion.
-
-![User interface overview](outputs/workplace-ui-overview.svg)
-
-Open `outputs/preview.html` locally to browse the overview. Individual SVG screens are in `outputs/`.
-
 ## Current status
 
-Concept and static UI draft only. The character and office illustrations are placeholders. No reconstruction model, motion generation, video playback, or interactive application has been implemented. The draft has not yet been imported into Figma.
+- **Web MVP:** the five UI screens are wired to data: space ready → home → walk to stop → move video + timer → done. Progress persists, and you can upload photos and videos on the phone.
+- **Map:** isometric SVG drawn from `scene.json`. Reconstructed packs overlay the `topdown.png` floor. The demo room is hand-authored, not reconstructed.
+- **Pipeline:** frames → VGGT → metric-ish scene (scale assumes 1.35 m phone height unless `--scale` is given). Spots are placed by hand in the scene editor.
+- **Not yet:** personal avatar, generated motion videos, a Three.js neon map in the app, cross-device sync, real reminders/notifications.
 
-For the initial demo, use a fixed five-minute routine. AR, real-time motion correction, pain assessment, and training-goal personalization are outside the current scope.
+Out of scope for the demo: AR, real-time motion correction, pain assessment, and training-goal personalization.
+
+Earlier light-theme SVG drafts remain in `outputs/` for reference.

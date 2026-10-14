@@ -1,0 +1,26 @@
+{
+  "sceneId": "demo",
+  "sceneVersion": "v1",
+  "units": "meters",
+  "upAxis": "Y",
+  "spots": [
+    {
+      "id": "spot_01", "label": "By the chair", "shortName": "chair", "objectId": "chair_01",
+      "position": [-1.79, 0.0, 1.49], "headingRadians": 0.0, "clearanceRadius": 0.7, "reviewed": true,
+      "exerciseIds": ["seated_calf_raise", "seated_knee_lift"],
+      "tip": "Find a sturdy chair and keep your feet flat. Once you're there, open the move video."
+    },
+    {
+      "id": "spot_02", "label": "Window space", "shortName": "window", "objectId": "window_01",
+      "position": [1.21, 0.0, -1.51], "headingRadians": 0.0, "clearanceRadius": 1.0, "reviewed": true,
+      "exerciseIds": ["march_in_place", "standing_stretch"],
+      "tip": "Stand in the open floor by the window with an arm's length of space around you."
+    },
+    {
+      "id": "spot_03", "label": "Desk side", "shortName": "desk", "objectId": "desk_02",
+      "position": [2.56, 0.0, 1.19], "headingRadians": 0.0, "clearanceRadius": 0.7, "reviewed": true,
+      "exerciseIds": ["desk_stretch", "neck_shoulders"],
+      "tip": "Stand facing the desk edge. Make sure the desk doesn't roll before you lean on it."
+    }
+  ]
+}

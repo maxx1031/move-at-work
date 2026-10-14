@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 390" preserveAspectRatio="xMidYMid slice">
+<style>.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2s ease-out infinite}@keyframes pulse{0%{transform:scale(.8);opacity:.9}100%{transform:scale(1.8);opacity:0}}</style>
+<rect x="0" y="0" width="350" height="252" fill="#3A3631"></rect>
+<rect x="0" y="252" width="350" height="138" fill="#2A2622"></rect>
+<rect x="0" y="248" width="350" height="5" fill="#4A4540"></rect>
+<rect x="222" y="34" width="104" height="126" fill="#7C9EA3" fill-opacity=".45"></rect>
+<path d="M274 34v126M222 97h104" stroke="#3A3631" stroke-width="4"></path>
+<path d="M222 253l-30 137h170l-36-137z" fill="#EDF3EF" fill-opacity=".05"></path>
+<rect x="10" y="152" width="96" height="8" fill="#5A4D40"></rect>
+<rect x="16" y="160" width="6" height="92" fill="#4A3F35"></rect>
+<rect x="94" y="160" width="6" height="92" fill="#4A3F35"></rect>
+<rect x="38" y="118" width="40" height="28" rx="3" fill="#1C1A18"></rect>
+<rect x="54" y="146" width="8" height="6" fill="#1C1A18"></rect>
+<rect x="110" y="160" width="28" height="94" rx="9" fill="#1E1C1A"></rect>
+<rect x="118" y="246" width="104" height="14" rx="6" fill="#1E1C1A"></rect>
+<rect x="164" y="260" width="9" height="42" fill="#141312"></rect>
+<path d="M126 322l42-20 42 20" stroke="#141312" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="126" cy="326" r="6" fill="#0E0D0C"></circle><circle cx="210" cy="326" r="6" fill="#0E0D0C"></circle>
+<path d="M140 150c8-6 20-6 26 2l-4 94h-26z" fill="#3F5E57"></path>
+<rect x="136" y="232" width="98" height="24" rx="11" fill="#2B3138"></rect>
+<line x1="230" y1="246" x2="236" y2="314" stroke="#2B3138" stroke-width="18" stroke-linecap="round"><animate attributeName="x2" values="236;236;238;238;236" keyTimes="0;0.2;0.45;0.7;1" dur="4s" repeatCount="indefinite"></animate><animate attributeName="y2" values="314;314;303;303;314" keyTimes="0;0.2;0.45;0.7;1" dur="4s" repeatCount="indefinite"></animate></line>
+<polygon points="226,328 228,312 258,316 266,328" fill="#121212"><animate attributeName="points" values="226,328 228,312 258,316 266,328;226,328 228,312 258,316 266,328;231,317 233,301 258,314 266,328;231,317 233,301 258,314 266,328;226,328 228,312 258,316 266,328" keyTimes="0;0.2;0.45;0.7;1" dur="4s" repeatCount="indefinite"></animate></polygon>
+<path d="M152 158l16 44 30 30" stroke="#3F5E57" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="200" cy="234" r="6.5" fill="#C9A98A"></circle>
+<rect x="146" y="138" width="10" height="14" fill="#C9A98A"></rect>
+<circle cx="151" cy="124" r="17" fill="#C9A98A"></circle>
+<path d="M134 122a17 17 0 0 1 34 -2c-8 -6 -22 -6 -34 2z" fill="#2A2420"></path>
+<g transform="translate(212,252)">
+<circle class="pulse" r="9" fill="none" stroke="#C6FF3D" stroke-width="2"></circle>
+<circle r="5" fill="#C6FF3D"></circle>
+<path d="M5 0h22" stroke="#C6FF3D" stroke-width="1.5"></path>
+<rect x="27" y="-11" width="84" height="22" rx="11" fill="#C6FF3D"></rect>
+<text x="69" y="4" text-anchor="middle" font-size="11" font-weight="600" fill="#0B0F0E" font-family="Space Grotesk, sans-serif">Hold the seat</text>
+</g>
+<ellipse cx="246" cy="332" rx="34" ry="7" fill="rgba(198,255,61,.12)" stroke="#C6FF3D" stroke-width="1.5" stroke-dasharray="4 4"></ellipse>
+<rect x="210" y="346" width="72" height="22" rx="11" fill="rgba(11,15,14,.8)" stroke="#C6FF3D"></rect>
+<text x="246" y="361" text-anchor="middle" font-size="11" fill="#C6FF3D" font-family="Space Grotesk, sans-serif">Feet flat</text>
+<path d="M286 320V290M279 297l7 -7 7 7" stroke="#C6FF3D" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+<text x="296" y="306" font-size="11" fill="#EDF3EF" font-family="JetBrains Mono, monospace">Lift</text>
+</svg>

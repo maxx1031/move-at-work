@@ -1,0 +1,19 @@
+{
+  "sceneId": "demo",
+  "sceneVersion": "v1",
+  "origin": "hand-authored",
+  "note": "Placeholder room traced from 01_UI.html. Not a reconstruction; replace with build_scene.py output.",
+  "units": "meters",
+  "upAxis": "Y",
+  "floorY": 0.0,
+  "wallHeight": 2.5,
+  "bounds": { "min": [-3.0, 0.0, -3.0], "max": [3.0, 2.5, 3.0] },
+  "entry": [0.1, 0.0, 2.9],
+  "objects": [
+    { "id": "window_01", "kind": "window", "position": [0.9, 0.75, -2.99], "size": [1.8, 1.1, 0.02] },
+    { "id": "desk_01", "kind": "desk", "position": [-1.2, 0.0, -1.38], "size": [1.6, 0.75, 1.6] },
+    { "id": "monitor_01", "kind": "monitor", "position": [-1.0, 0.75, -1.6], "size": [0.6, 0.4, 0.06] },
+    { "id": "chair_01", "kind": "chair", "position": [-1.2, 0.0, 0.48], "size": [0.5, 0.45, 0.5] },
+    { "id": "desk_02", "kind": "desk", "position": [1.38, 0.0, 0.81], "size": [0.9, 0.72, 1.0] }
+  ]
+}

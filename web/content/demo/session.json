@@ -1,0 +1,10 @@
+{
+  "id": "daily_5min",
+  "sceneId": "demo",
+  "reminder": "15:00",
+  "stops": [
+    { "spotId": "spot_01", "exerciseId": "seated_calf_raise", "title": "Chair warm-up", "durationSec": 60 },
+    { "spotId": "spot_02", "exerciseId": "march_in_place", "title": "Floor moves", "durationSec": 120 },
+    { "spotId": "spot_03", "exerciseId": "desk_stretch", "title": "Desk stretch", "durationSec": 120 }
+  ]
+}
