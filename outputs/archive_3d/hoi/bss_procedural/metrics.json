@@ -1,0 +1,25 @@
+{
+  "frames": 270,
+  "rear_foot_seat_gap_m_p95": 0.006561349052935838,
+  "rear_foot_within_2cm_frac": 1.0,
+  "rear_foot_slide_m": 0.016759498044848442,
+  "front_foot_slide_m": 0.01521107368171215,
+  "front_sole_floor_gap_m_p95": 0.028157383203506463,
+  "chair_penetration_m_max": 0.0013574486365541816,
+  "floor_penetration_m_max": 0.0,
+  "front_knee_flexion_deg_min": 5.294844150543213,
+  "front_knee_flexion_deg_max": 82.59307098388672,
+  "pelvis_height_m_range": [
+    0.7615825533866882,
+    0.9418442845344543
+  ],
+  "seat_height_m": 0.46000000834465027,
+  "pass": {
+    "rear_foot_on_seat": true,
+    "front_foot_slide": true,
+    "rear_foot_slide": true,
+    "chair_penetration": true,
+    "floor_penetration": true,
+    "front_knee_bottom_80_110": true
+  }
+}

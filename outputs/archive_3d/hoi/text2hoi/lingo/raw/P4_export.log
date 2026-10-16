@@ -1,0 +1,38 @@
+{
+ "frames": 42,
+ "seconds": 1.4,
+ "left_foot_min_dist_m": 0.42287405797028427,
+ "left_foot_min_dist_frame": 37,
+ "left_foot_frames_within_2cm": 0,
+ "left_foot_frames_within_5cm": 0,
+ "left_foot_on_seat_frames": 0,
+ "left_foot_max_height_m": 0.004954397678375244,
+ "right_foot_min_dist_m": 0.5008871838374548,
+ "right_foot_min_dist_frame": 3,
+ "right_foot_frames_within_2cm": 0,
+ "right_foot_frames_within_5cm": 0,
+ "right_foot_on_seat_frames": 0,
+ "right_foot_max_height_m": 0.011718451976776123,
+ "penetration_max_m": 0.0,
+ "penetration_frames_gt_2cm": 0,
+ "penetration_mean_max_per_frame_m": 0.0,
+ "body_min_dist_to_chair_m": 0.3,
+ "floor_min_y_m": -0.0020609498023986816,
+ "body_centroid_start_xz": [
+  -0.7919999957084656,
+  -0.46399998664855957
+ ],
+ "body_centroid_end_xz": [
+  -0.7739999890327454,
+  -0.4620000123977661
+ ],
+ "min_vertex_height_per_frame_range": [
+  -0.0020609498023986816,
+  0.004954397678375244
+ ],
+ "refit_v2v_m": 0.002307553542777896,
+ "ground_shift_y_m": 0.05240362882614136,
+ "texts": [
+  "A person puts one heel on the chair seat and leans forward to stretch the hamstring"
+ ]
+}

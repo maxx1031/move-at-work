@@ -1,0 +1,38 @@
+{
+ "frames": 426,
+ "seconds": 14.2,
+ "left_foot_min_dist_m": 0.09189918993856493,
+ "left_foot_min_dist_frame": 405,
+ "left_foot_frames_within_2cm": 0,
+ "left_foot_frames_within_5cm": 0,
+ "left_foot_on_seat_frames": 0,
+ "left_foot_max_height_m": 0.0196344256401062,
+ "right_foot_min_dist_m": 0.0002166159482009417,
+ "right_foot_min_dist_frame": 397,
+ "right_foot_frames_within_2cm": 97,
+ "right_foot_frames_within_5cm": 133,
+ "right_foot_on_seat_frames": 0,
+ "right_foot_max_height_m": 0.02738708257675171,
+ "penetration_max_m": 0.01241789622715681,
+ "penetration_frames_gt_2cm": 0,
+ "penetration_mean_max_per_frame_m": 0.0020225827272490585,
+ "body_min_dist_to_chair_m": 0.0002051735374090385,
+ "floor_min_y_m": -0.01982802152633667,
+ "body_centroid_start_xz": [
+  -1.527999997138977,
+  -0.9810000061988831
+ ],
+ "body_centroid_end_xz": [
+  -0.3089999854564667,
+  -0.3449999988079071
+ ],
+ "min_vertex_height_per_frame_range": [
+  -0.01982802152633667,
+  0.0073989033699035645
+ ],
+ "refit_v2v_m": 0.002253887942060828,
+ "ground_shift_y_m": 0.04971867799758911,
+ "texts": [
+  "A person walks to the chair and sits down on it"
+ ]
+}

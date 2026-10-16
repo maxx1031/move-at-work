@@ -1,0 +1,3 @@
+- input_path=/home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/inputs/P3_kick.pkl
+- exp_dir=/home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P3_kick
+- test_setting=P3_kick

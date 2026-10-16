@@ -1,5 +1,19 @@
 .DS_Store
-work/
 .env
 .env.*
 !.env.example
+__pycache__/
+
+# Licensed body models, model weights, user data (videos/photos), intermediate work
+body_models/
+checkpoints/
+data/
+work/
+
+# Generated videos and large results (regenerable)
+outputs/agent/
+outputs/archive_3d/**/*.mp4
+outputs/archive_3d/**/*.npz
+outputs/archive_3d/**/*.ply
+outputs/archive_3d/**/*.glb
+standup_agent/backends/*/run/

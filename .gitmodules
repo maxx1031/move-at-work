@@ -1,0 +1,12 @@
+[submodule "third_party/Wan2.2"]
+	path = third_party/Wan2.2
+	url = https://github.com/Wan-Video/Wan2.2
+[submodule "third_party/VACE"]
+	path = third_party/VACE
+	url = https://github.com/ali-vilab/VACE.git
+[submodule "third_party/DiffSynth-Studio"]
+	path = third_party/DiffSynth-Studio
+	url = https://github.com/modelscope/DiffSynth-Studio.git
+[submodule "third_party/Phantom"]
+	path = third_party/Phantom
+	url = https://github.com/Phantom-video/Phantom.git

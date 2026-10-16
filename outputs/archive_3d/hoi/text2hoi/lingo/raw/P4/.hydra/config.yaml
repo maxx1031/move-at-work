@@ -1,0 +1,138 @@
+train: false
+device: cuda
+batch_size: 1
+interp_s: 3
+use_scheduler: true
+scheduler_model_path: ${oc.env:ROOT_DIR}/ckpts/scheduler/scheduler.pth
+scheduler_threshold: 0.7
+locomotion_threshold: 1.0
+vis: true
+start_type: stand
+repeat_time: 0
+seg_num: 1
+seg_len: 4
+speed: 0.8
+test_setting: P4
+exp_dir: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P4
+ckpt_path: ${oc.env:ROOT_DIR}/ckpts/model/bs128__ws16__scene_occ_two.pth
+input_path: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/inputs/P4.pkl
+smpl_dir: ${oc.env:ROOT_DIR}/smpl_models
+scene_type: occ_two
+max_window_size: 16
+motion_len: 10000000
+load_language: true
+load_scene: true
+use_pi: true
+load_hand_goal: true
+load_pelvis_goal: true
+auto_regre_num: 2
+num_gpus: 1
+num_workers: 0
+dataset:
+  folder: ${oc.env:ROOT_DIR}/dataset
+  device: ${device}
+  batch_size: ${batch_size}
+  step: 3
+  nb_voxels:
+  - 32
+  - 32
+  - 32
+  mesh_grid:
+  - -0.6
+  - 0.6
+  - 0.1
+  - 1.2
+  - -0.6
+  - 0.6
+  vis: ${vis}
+  start_type: ${start_type}
+  test_scene_name: None
+  train: ${train}
+  load_language: ${load_language}
+  load_scene: ${load_scene}
+  load_hand_goal: ${load_hand_goal}
+  load_pelvis_goal: ${load_pelvis_goal}
+  use_pi: ${use_pi}
+  max_window_size: ${max_window_size}
+  joints_ind:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 23
+  - 24
+  - 25
+  - 34
+  - 40
+  - 49
+  nb_joints: 28
+guidance:
+  pelvis:
+    seq_len: ${dataset.seq_len}
+    step: ${dataset.step}
+    mask_ind: 0
+    mask_y: false
+    emb_f: 0
+    no_scene: true
+model:
+  model_smplx:
+    _target_: models.joints_to_smplx.JointsToSMPLX
+    input_dim: ${times:${dataset.nb_joints},3}
+    output_dim: 132
+    hidden_dim: 128
+    ckpt: ${oc.env:ROOT_DIR}/ckpts/joints2smplx/train_joint2smpl__input_84__hidden_128__all__last.pth
+  synhsi_body:
+    _target_: models.synhsi.Unet
+    dim_model: 512
+    num_heads: 16
+    num_layers: 8
+    dropout_p: 0.1
+    nb_voxels: ${dataset.nb_voxels}
+    free_p: 0.1
+    ac_type: last_add_first_token
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_output: ${times:${dataset.nb_joints},3}
+    scene_type: ${scene_type}
+    load_scene: ${load_scene}
+    load_language: ${load_language}
+    load_hand_goal: ${load_hand_goal}
+    load_pelvis_goal: ${load_pelvis_goal}
+    language_feature_dim: 768
+    ckpt: ${ckpt_path}
+  scheduler:
+    num_heads: 8
+    num_layers: 3
+    dropout_p: 0.1
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_model: 512
+    language_feature_dim: 768
+sampler:
+  pelvis:
+    _target_: models.synhsi.Sampler
+    device: ${device}
+    mask_ind: ${guidance.pelvis.mask_ind}
+    emb_f: ${guidance.pelvis.emb_f}
+    batch_size: ${batch_size}
+    channel: ${times:${dataset.nb_joints},3}
+    auto_regre_num: ${auto_regre_num}
+    timesteps: 100
+    motion_len: ${motion_len}
+    scene_type: ${scene_type}

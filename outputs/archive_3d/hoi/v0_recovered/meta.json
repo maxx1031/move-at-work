@@ -1,0 +1,23 @@
+{
+  "scene": "/home/bnzhao2/move-at-work/work/v0/scene.json",
+  "cameras": "/home/bnzhao2/move-at-work/work/v0/cameras.json",
+  "source": "work/v0/gvhmr/smplx_incam.npz",
+  "rear_foot": "left",
+  "contact": "none",
+  "use_object": false,
+  "final_losses": {
+    "kp2d": 0.3781887888908386,
+    "rear_contact": 1.0,
+    "rear_static": 0.009155717678368092,
+    "front_sole": 2.3048736693453975e-05,
+    "front_static": 7.047447070362978e-06,
+    "pen": 0.0,
+    "floor": 0.0,
+    "prior": 0.6972765922546387,
+    "smooth": 0.0006542078335769475
+  },
+  "scene_notes": [
+    "generated mesh work/v0/sam3d/chair.glb aligned to measured points work/v0/chair_points_world.npy",
+    "{\"yaw_deg\": 14.0, \"shift_m\": [-0.039999999999999994, -0.1], \"trimmed_cost_m\": 0.08371151238679886, \"point_to_mesh_m_median\": 0.11193810403347015, \"point_to_mesh_m_p90\": 0.2820135533809663, \"height_m\": 0.9828162968158719, \"footprint_m\": [0.886279278340248, 2.127961904747429], \"height_scale\": 0.6910355015463286, \"silhouette\": {\"silhouette_iou_before\": 0.1646795512720289, \"silhouette_iou_after\": 0.2651207059398672, \"yaw_deg\": -14.53125, \"shift_m\": [0.009375, 0.014062499999999999], \"scale\": 1.0686607724313482}, \"init\": \"sam3d_pose\"}"
+  ]
+}

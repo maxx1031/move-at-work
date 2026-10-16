@@ -1,0 +1,681 @@
+{
+ "about": "Curated office-friendly exercises for Just Standup. Exercise names and categories follow the ExRx.net exercise directory (https://exrx.net/Lists/Directory). exrx_list is the ExRx category list page to look the exercise up on; links could not be verified automatically (ExRx blocks automated access).",
+ "affordances": {
+  "seat": "a stable seat at roughly knee height (fixed-leg chair, bench, sofa, low cabinet). Not on casters/wheels.",
+  "table_edge": "a sturdy table, desk or counter edge at about hip height that will not slide or tip.",
+  "wall": "a clear, flat wall section about 1 m wide with nothing fragile on it.",
+  "rail": "a fixed, horizontal handrail, railing top bar, barre or bar at about waist-to-chest height that can be gripped or a heel can rest on. NOT vertical posts, poles, bollards, tree trunks or walls.",
+  "step": "a flat stair step, curb or low sturdy platform 10-30 cm high with a flat top. NOT bollards, rounded or sloped surfaces, benches or chairs.",
+  "floor_open": "an open, flat, non-slippery floor area of at least about 2 m x 1.5 m."
+ },
+ "exercises": [
+  {
+   "id": "bulgarian_split_squat",
+   "name": "Split Squat (rear foot elevated / Bulgarian)",
+   "exrx_category": "Thighs - Quadriceps (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ThighWt",
+   "affordance": "seat",
+   "level": "intermediate",
+   "target": "quadriceps, gluteus maximus",
+   "start_pose": "stands upright about one stride in front of the {object} with the back turned to it, facing away from the {object}; one foot is placed behind on the {object} with the top of the foot resting on its seat, the other foot flat on the floor in front, hands on hips",
+   "motion": "bends the front knee and lowers the hips straight down until the front thigh is nearly parallel to the floor, the back knee pointing at the floor, then pushes back up through the front heel",
+   "safety": "seat must not roll or fold; front knee tracks over the toes",
+   "duration_s": 5,
+   "reps": "2 repetitions",
+   "constraints": "the rear foot stays resting on the {object} the whole time, the front foot stays planted flat on the floor, the torso stays upright; only the hips move straight down and up",
+   "pose_checks": [
+    "Is the person facing away from the {object} (the {object} is behind the person)?",
+    "Is exactly one foot resting on the {object} behind the person while the other foot is on the floor?"
+   ],
+   "orientation": "foot_back",
+   "motion_checks": [
+    "the front knee is clearly bent with the hips lowered while the rear foot rests on the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "knee": 35
+   },
+   "unilateral": true,
+   "start_angles": {},
+   "min_reps": 1
+  },
+  {
+   "id": "chair_squat",
+   "name": "Squat to box (bodyweight box squat)",
+   "exrx_category": "Thighs - Quadriceps (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ThighWt",
+   "affordance": "seat",
+   "level": "beginner",
+   "target": "quadriceps, gluteus maximus",
+   "start_pose": "stands upright directly in front of the {object} with the back turned to it, facing away from it, feet shoulder-width apart flat on the floor, arms extended forward",
+   "motion": "pushes the hips back and bends the knees to lightly touch the {object} with the buttocks, then stands back up without sitting down",
+   "safety": "seat must be stable; do not drop onto it",
+   "duration_s": 5,
+   "reps": "2 repetitions",
+   "constraints": "feet stay planted flat on the floor in the same spot; the buttocks only lightly touch the {object} and she does not sit or lean back; arms stay extended forward",
+   "pose_checks": [
+    "Is the person standing directly in front of the {object} with the back toward it?",
+    "Are both feet flat on the floor?"
+   ],
+   "orientation": "back_to_object",
+   "motion_checks": [
+    "the hips are lowered close to the {object} with the knees clearly bent"
+   ],
+   "visibility": "high",
+   "rom": {
+    "knee": 35,
+    "foot_drift_max": 0.2
+   },
+   "unilateral": false,
+   "start_angles": {
+    "knee_min": 150
+   },
+   "min_reps": 1
+  },
+  {
+   "id": "bench_dip",
+   "name": "Bench Dip",
+   "exrx_category": "Upper Arms - Triceps (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ArmWt",
+   "affordance": "seat",
+   "level": "intermediate",
+   "target": "triceps brachii",
+   "start_pose": "is positioned with the back to the {object}, both hands gripping its front edge beside the hips, arms straight, hips just in front of the {object} and off the seat, knees bent and both feet flat on the floor",
+   "motion": "bends the elbows straight back to lower the hips toward the floor, then straightens the arms to push back up, back close to the {object}",
+   "safety": "only on a heavy or fixed seat that cannot tip forward (never a folding chair)",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "hands stay on the edge of the {object}, feet stay planted on the floor, the back stays close to the {object}; only the elbows bend and the hips move straight down and up a short distance",
+   "pose_checks": [
+    "Are both hands gripping the edge of the {object} behind the person?",
+    "Are the hips off the {object} (not sitting on it)?"
+   ],
+   "orientation": "back_to_object",
+   "motion_checks": [
+    "the elbows are clearly bent with the hips lowered below the edge of the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "elbow": 40
+   },
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 1
+  },
+  {
+   "id": "incline_pushup_seat",
+   "name": "Incline Push-up",
+   "exrx_category": "Chest (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ChestWt",
+   "affordance": "seat",
+   "level": "beginner",
+   "target": "pectoralis major, triceps",
+   "start_pose": "leans toward the {object} with both hands on its front edge shoulder-width apart and arms straight, body in a straight plank line, both feet on the floor about a stride back",
+   "motion": "bends the elbows and lowers the chest down to the edge of the {object}, then pushes back up until the arms are straight",
+   "safety": "seat must not slide away; place it against a wall if possible",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "hands stay on the {object}, feet stay on the floor, the body stays in one straight rigid line; only the elbows bend",
+   "pose_checks": [
+    "Are both hands on the {object}?",
+    "Is the body in a straight diagonal plank line with the feet on the floor?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "the elbows are clearly bent with the chest close to the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "elbow": 60
+   },
+   "unilateral": false,
+   "start_angles": {
+    "elbow_min": 125
+   },
+   "min_reps": 1
+  },
+  {
+   "id": "seated_knee_raise",
+   "name": "Seated Leg Raise (knee-up)",
+   "exrx_category": "Waist - Hip flexors / Abdominals (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/WaistWt",
+   "affordance": "seat",
+   "level": "beginner",
+   "target": "iliopsoas, rectus abdominis",
+   "start_pose": "sits upright near the front edge of the {object}, both hands holding the sides of the seat, feet flat on the floor",
+   "motion": "lifts both knees toward the chest while leaning back slightly, then lowers the feet back toward the floor without touching",
+   "safety": "keep the back straight; the chair should not tip back",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "she stays seated on the {object} the whole time, hands holding the seat edges; only the knees lift a little toward the chest and lower",
+   "pose_checks": [
+    "Is the person sitting on the {object}?",
+    "Are both hands holding the seat?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "the person is seated with both knees lifted toward the chest and the feet off the floor"
+   ],
+   "visibility": "high",
+   "rom": {
+    "hip_angle": 25
+   },
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "seated_calf_raise",
+   "name": "Seated Calf Raise (bodyweight)",
+   "exrx_category": "Calves (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/CalfWt",
+   "affordance": "seat",
+   "level": "beginner",
+   "target": "soleus",
+   "start_pose": "sits upright on the {object}, both feet flat on the floor, hands resting on the knees",
+   "motion": "presses through the balls of the feet to raise both heels high off the floor, holds, then lowers them",
+   "safety": "none special",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "she stays seated upright on the {object} the whole time, toes stay on the floor; the heels lift high off the floor and lower; the upper body does not move",
+   "pose_checks": [
+    "Is the person sitting on the {object}?",
+    "Are both feet flat on the floor?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "the person is seated with the heels lifted off the floor and the toes still on the floor"
+   ],
+   "visibility": "low",
+   "rom": {},
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "incline_pushup_table",
+   "name": "Incline Push-up",
+   "exrx_category": "Chest (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ChestWt",
+   "affordance": "table_edge",
+   "level": "beginner",
+   "target": "pectoralis major, triceps",
+   "start_pose": "leans toward the {object} with both hands on its edge shoulder-width apart and arms straight, body in a straight plank line, both feet on the floor about a stride back",
+   "motion": "bends the elbows and lowers the chest down to the edge of the {object}, then pushes back up until the arms are straight",
+   "safety": "table must not slide or tip",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "hands stay on the edge of the {object}, feet stay on the floor, the body stays in one straight rigid line; only the elbows bend",
+   "pose_checks": [
+    "Are both hands on the edge of the {object}?",
+    "Is the body in a straight diagonal plank line with the feet on the floor?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "the elbows are clearly bent with the chest close to the edge of the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "elbow": 60
+   },
+   "unilateral": false,
+   "start_angles": {
+    "elbow_min": 125
+   },
+   "min_reps": 1
+  },
+  {
+   "id": "standing_hip_extension_table",
+   "name": "Standing Hip Extension (bodyweight)",
+   "exrx_category": "Hips - Gluteus Maximus (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/HipsWt",
+   "affordance": "table_edge",
+   "level": "beginner",
+   "target": "gluteus maximus, hamstrings",
+   "start_pose": "stands facing the {object}, both hands resting on its edge, leaning forward slightly, both feet on the floor",
+   "motion": "keeping the leg straight, lifts one leg straight back behind the body, squeezing the glute, then lowers it; repetitions on one side",
+   "safety": "keep the lower back neutral, avoid arching",
+   "duration_s": 5,
+   "reps": "3 repetitions on one leg",
+   "constraints": "hands stay resting on the {object}, the standing foot stays planted, the torso stays still; only one straight leg moves a short distance backward and returns",
+   "pose_checks": [
+    "Is the person facing the {object}?",
+    "Are both hands resting on the {object}?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "one straight leg is lifted backward behind the body while the hands rest on the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "hip_angle": 20
+   },
+   "unilateral": true,
+   "start_angles": {},
+   "min_reps": 1
+  },
+  {
+   "id": "standing_calf_raise_table",
+   "name": "Standing Calf Raise (bodyweight)",
+   "exrx_category": "Calves (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/CalfWt",
+   "affordance": "table_edge",
+   "level": "beginner",
+   "target": "gastrocnemius",
+   "start_pose": "stands upright facing the {object}, about half a step away, fingertips of both hands resting on its edge, feet hip-width apart flat on the floor",
+   "motion": "rises high onto the tips of the toes so the heels are clearly lifted well off the floor, holds for a moment, then lowers the heels back down",
+   "safety": "none special",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "she stands upright and still with fingertips on the {object}, legs straight, toes stay on the floor; the whole body rises straight up and lowers straight down as the heels lift and lower; no leaning, no bending, no kicking",
+   "pose_checks": [
+    "Is the person standing upright facing the {object}?",
+    "Are the fingertips or hands resting on the {object}?",
+    "Are both feet flat on the floor?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "the person stands on tiptoe: the heels are lifted off the floor while the toes stay on the floor"
+   ],
+   "visibility": "low",
+   "rom": {
+    "foot_drift_max": 0.2
+   },
+   "unilateral": false,
+   "start_angles": {
+    "knee_min": 160
+   },
+   "min_reps": 2
+  },
+  {
+   "id": "wall_sit",
+   "name": "Wall Sit",
+   "exrx_category": "Thighs - Quadriceps (bodyweight, isometric)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ThighWt",
+   "affordance": "wall",
+   "level": "beginner",
+   "target": "quadriceps",
+   "start_pose": "has the whole back flat against the {object}, knees bent about 90 degrees as if sitting on an invisible chair, thighs parallel to the floor, feet flat on the floor in front, arms crossed",
+   "motion": "slides down the {object} until the knees are bent about 90 degrees as if sitting on an invisible chair, holds the position with arms crossed, then slides back up",
+   "safety": "knees above the ankles, not past the toes",
+   "duration_s": 5,
+   "reps": "one continuous hold",
+   "constraints": "her back stays flat against the {object}, feet stay planted on the floor, knees stay bent at about 90 degrees; she holds still, breathing, with only tiny natural movements",
+   "pose_checks": [
+    "Is the person's back against the {object}?",
+    "Are the knees bent with the thighs roughly parallel to the floor (no chair under the person)?"
+   ],
+   "orientation": "back_to_object",
+   "motion_checks": [
+    "the back is against the {object} with the thighs roughly parallel to the floor"
+   ],
+   "visibility": "low",
+   "rom": {
+    "foot_drift_max": 0.2
+   },
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "wall_pushup",
+   "name": "Wall Push-up (incline push-up)",
+   "exrx_category": "Chest (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ChestWt",
+   "affordance": "wall",
+   "level": "beginner",
+   "target": "pectoralis major, triceps",
+   "start_pose": "stands an arm's length from the {object}, facing it, both palms flat on it at shoulder height, body straight, feet on the floor",
+   "motion": "bends the elbows and brings the chest close to the {object}, then pushes back until the arms are straight",
+   "safety": "none special",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "palms stay on the {object}, feet stay planted on the floor, the body stays straight; only the elbows bend and the chest moves toward the {object} and back",
+   "pose_checks": [
+    "Is the person facing the {object}?",
+    "Are both palms on the {object}?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "the elbows are clearly bent with the chest close to the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "elbow": 60
+   },
+   "unilateral": false,
+   "start_angles": {
+    "elbow_min": 125
+   },
+   "min_reps": 1
+  },
+  {
+   "id": "wall_calf_stretch",
+   "name": "Calf Stretch (standing, against wall)",
+   "exrx_category": "Stretches - Calves",
+   "exrx_list": "https://exrx.net/Lists/Directory",
+   "affordance": "wall",
+   "level": "beginner",
+   "target": "gastrocnemius (stretch)",
+   "start_pose": "faces the {object} with both hands on it at shoulder height, one foot forward with the knee bent and the other leg straight back with its heel on the floor",
+   "motion": "leans the hips gently toward the {object} keeping the back heel down to stretch the calf, holds, then switches legs",
+   "safety": "gentle, no bouncing",
+   "duration_s": 5,
+   "reps": "one continuous hold",
+   "constraints": "hands stay on the {object}, both feet stay planted, the back heel stays on the floor; she leans gently forward and holds still",
+   "pose_checks": [
+    "Is the person facing the {object} with both hands on it?",
+    "Is one leg straight back with the heel on the floor?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "the hands are on the {object} with one leg straight back and its heel on the floor"
+   ],
+   "visibility": "low",
+   "rom": {},
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "hamstring_stretch_rail",
+   "name": "Hamstring Stretch (standing, heel elevated)",
+   "exrx_category": "Stretches - Hamstrings",
+   "exrx_list": "https://exrx.net/Lists/Directory",
+   "affordance": "rail",
+   "level": "beginner",
+   "target": "hamstrings (stretch)",
+   "start_pose": "stands facing the {object}, one leg raised straight with its heel resting on top of the {object}, the standing leg straight, hips square",
+   "motion": "hinges forward from the hips reaching the hands toward the raised foot to stretch the back of the leg, holds, then slowly comes back up",
+   "safety": "rail height below hip; keep the standing knee soft",
+   "duration_s": 5,
+   "reps": "one slow stretch and return",
+   "constraints": "the heel stays resting on top of the {object}, both legs stay straight, the standing foot stays planted; only the upper body hinges slowly forward and back up",
+   "pose_checks": [
+    "Is the person facing the {object}?",
+    "Is one heel resting on top of the {object} with that leg straight?"
+   ],
+   "orientation": "foot_front",
+   "motion_checks": [
+    "one heel rests on top of the {object} with that leg straight while the upper body leans forward"
+   ],
+   "visibility": "high",
+   "rom": {},
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "assisted_single_leg_squat_rail",
+   "name": "Single Leg Squat (assisted)",
+   "exrx_category": "Thighs - Quadriceps (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ThighWt",
+   "affordance": "rail",
+   "level": "intermediate",
+   "target": "quadriceps, gluteus maximus",
+   "start_pose": "stands beside the {object} holding it with one hand, balancing on one leg with the other foot lifted slightly forward",
+   "motion": "bends the standing knee to lower the hips as far as comfortable while holding the {object} for balance, then stands back up",
+   "safety": "use the rail only for balance",
+   "duration_s": 5,
+   "reps": "2 repetitions",
+   "constraints": "one hand stays holding the {object}, the standing foot stays planted, the other foot stays slightly lifted in front; only the hips move down and up a short distance",
+   "pose_checks": [
+    "Is one hand holding the {object}?",
+    "Is the person standing on one leg?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "the person balances on one leg with that knee clearly bent while holding the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "knee": 35
+   },
+   "unilateral": true,
+   "start_angles": {},
+   "min_reps": 1
+  },
+  {
+   "id": "leg_swing_rail",
+   "name": "Leg Swing (dynamic hip mobility)",
+   "exrx_category": "Stretches - Hips (dynamic)",
+   "exrx_list": "https://exrx.net/Lists/Directory",
+   "affordance": "rail",
+   "level": "beginner",
+   "target": "hip flexors, hamstrings (dynamic)",
+   "start_pose": "stands sideways next to the {object}, the near hand holding it, weight on the inside leg, the outside leg relaxed",
+   "motion": "swings the outside leg forward and backward like a pendulum in a controlled, gradually larger arc, torso upright",
+   "safety": "controlled range, no kicking",
+   "duration_s": 5,
+   "reps": "6 controlled swings",
+   "constraints": "the near hand stays holding the {object}, the standing foot stays planted, the torso stays upright and still; only the outside leg swings forward and back below hip height",
+   "pose_checks": [
+    "Is the person standing sideways next to the {object}?",
+    "Is the near hand holding the {object}?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "one leg is swung clearly forward or backward while a hand holds the {object}"
+   ],
+   "visibility": "high",
+   "rom": {
+    "hip_angle": 20
+   },
+   "unilateral": true,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "standing_calf_raise_rail",
+   "name": "Standing Calf Raise (bodyweight)",
+   "exrx_category": "Calves (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/CalfWt",
+   "affordance": "rail",
+   "level": "beginner",
+   "target": "gastrocnemius",
+   "start_pose": "stands upright facing the {object}, about half a step away, both hands lightly holding it, feet hip-width apart flat on the floor",
+   "motion": "rises high onto the tips of the toes so the heels are clearly lifted well off the floor, holds for a moment, then lowers the heels back down",
+   "safety": "none special",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "she stands upright and still holding the {object} with both hands, legs straight, toes stay on the floor; the whole body rises straight up and lowers straight down as the heels lift and lower; no leaning, no bending, no kicking",
+   "pose_checks": [
+    "Is the person standing upright facing the {object}?",
+    "Are both hands holding the {object}?",
+    "Are both feet flat on the floor?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "the person stands on tiptoe: the heels are lifted off the floor while the toes stay on the floor"
+   ],
+   "visibility": "low",
+   "rom": {
+    "foot_drift_max": 0.2
+   },
+   "unilateral": false,
+   "start_angles": {
+    "knee_min": 160
+   },
+   "min_reps": 2
+  },
+  {
+   "id": "step_up",
+   "name": "Step-up",
+   "exrx_category": "Thighs - Quadriceps (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ThighWt",
+   "affordance": "step",
+   "level": "beginner",
+   "target": "quadriceps, gluteus maximus",
+   "start_pose": "stands on the floor in front of the {object}, facing toward it (looking at it), with one foot raised and placed flat on the first step or top of the {object} and the other foot flat on the floor",
+   "motion": "pushes through the raised foot to step up onto the {object} and stand tall, then steps back down with control; alternating legs",
+   "safety": "step must be stable and non-slip",
+   "duration_s": 5,
+   "reps": "2 repetitions",
+   "constraints": "she steps straight up onto the {object} and back down to the same spot on the floor, facing the same direction, holding the handrail lightly if there is one; she does not climb further, walk away or turn around",
+   "pose_checks": [
+    "Is the person facing toward the {object} (not with the back to it)?",
+    "Is exactly one foot placed on the first step or top of the {object} while the other foot is on the floor?"
+   ],
+   "orientation": "foot_front",
+   "motion_checks": [
+    "the person stands fully on top of the step or {object} with both feet on it"
+   ],
+   "visibility": "high",
+   "rom": {
+    "knee": 50,
+    "hip_up": 0.25
+   },
+   "unilateral": true,
+   "start_angles": {},
+   "min_reps": 1
+  },
+  {
+   "id": "step_calf_raise",
+   "name": "Calf Raise on Step (bodyweight)",
+   "exrx_category": "Calves (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/CalfWt",
+   "affordance": "step",
+   "level": "beginner",
+   "target": "gastrocnemius",
+   "start_pose": "stands facing up the {object} with the balls of both feet on the edge of the step and the heels hanging off, one hand lightly holding a rail or wall",
+   "motion": "lowers the heels slightly below the step edge, then rises a few centimetres onto the toes",
+   "safety": "hold something for balance",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "the balls of both feet stay on the edge of the {object}, one hand lightly holds a support, legs straight; only the heels lower slightly and rise",
+   "pose_checks": [
+    "Are both feet on the edge of the step?",
+    "Is the person facing up the {object}?"
+   ],
+   "orientation": "face_object",
+   "motion_checks": [
+    "the heels are lifted above the step edge while standing on the balls of the feet"
+   ],
+   "visibility": "low",
+   "rom": {},
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "bodyweight_squat",
+   "name": "Squat (bodyweight)",
+   "exrx_category": "Thighs - Quadriceps (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ThighWt",
+   "affordance": "floor_open",
+   "level": "beginner",
+   "target": "quadriceps, gluteus maximus",
+   "start_pose": "stands tall in the open floor space, side-on to the camera, feet shoulder-width apart, arms extended forward",
+   "motion": "pushes the hips back and bends the knees to squat down until the thighs are about parallel to the floor, then stands back up",
+   "safety": "knees track over the toes",
+   "duration_s": 5,
+   "reps": "3 repetitions",
+   "constraints": "feet stay planted in the same spot, arms stay extended forward, the torso stays upright; only the hips move down and up",
+   "pose_checks": [
+    "Is the person standing upright on the floor?",
+    "Are both arms extended forward?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "the hips are lowered with the knees clearly bent, thighs near parallel to the floor"
+   ],
+   "visibility": "high",
+   "rom": {
+    "knee": 35,
+    "foot_drift_max": 0.2
+   },
+   "unilateral": false,
+   "start_angles": {
+    "knee_min": 150
+   },
+   "min_reps": 2
+  },
+  {
+   "id": "reverse_lunge",
+   "name": "Rear Lunge (bodyweight)",
+   "exrx_category": "Thighs - Quadriceps (bodyweight)",
+   "exrx_list": "https://exrx.net/Lists/ExList/ThighWt",
+   "affordance": "floor_open",
+   "level": "beginner",
+   "target": "quadriceps, gluteus maximus",
+   "start_pose": "stands tall in the open floor space, side-on to the camera, feet hip-width apart, hands on hips",
+   "motion": "steps one foot back and lowers until both knees are bent about 90 degrees, then pushes back to standing; alternating legs",
+   "safety": "front knee stays over the ankle",
+   "duration_s": 5,
+   "reps": "2 repetitions, alternating legs",
+   "constraints": "she steps straight back and returns to the same spot each time, facing the same direction, torso upright",
+   "pose_checks": [
+    "Is the person standing upright on the floor?",
+    "Are the hands on the hips?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "one leg is stepped back with both knees clearly bent in a lunge"
+   ],
+   "visibility": "high",
+   "rom": {
+    "knee": 35
+   },
+   "unilateral": true,
+   "start_angles": {},
+   "min_reps": 1
+  },
+  {
+   "id": "march_in_place",
+   "name": "High-knee March (in place)",
+   "exrx_category": "Aerobic / warm-up",
+   "exrx_list": "https://exrx.net/Lists/Directory",
+   "affordance": "floor_open",
+   "level": "beginner",
+   "target": "hip flexors, general warm-up",
+   "start_pose": "stands tall in the open floor space, arms relaxed at the sides",
+   "motion": "marches in place lifting each knee to hip height with opposite arm swing, steady rhythm",
+   "safety": "none special",
+   "duration_s": 5,
+   "reps": "steady rhythm",
+   "constraints": "she stays in the same spot facing the same direction; only the knees lift alternately with a natural arm swing",
+   "pose_checks": [
+    "Is the person standing upright on the floor?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "one knee is lifted to about hip height"
+   ],
+   "visibility": "high",
+   "rom": {
+    "knee": 40
+   },
+   "unilateral": true,
+   "start_angles": {},
+   "min_reps": 2
+  },
+  {
+   "id": "standing_side_bend",
+   "name": "Standing Side Bend Stretch",
+   "exrx_category": "Stretches - Waist / Obliques",
+   "exrx_list": "https://exrx.net/Lists/Directory",
+   "affordance": "floor_open",
+   "level": "beginner",
+   "target": "obliques, latissimus (stretch)",
+   "start_pose": "stands tall facing the camera, feet hip-width apart, one arm raised straight overhead",
+   "motion": "slowly bends sideways reaching the raised arm over the head to stretch the side of the torso, holds, then returns and switches sides",
+   "safety": "no twisting",
+   "duration_s": 5,
+   "reps": "one slow bend to each side",
+   "constraints": "feet stay planted, hips stay still; only the upper body bends slowly to the side and returns",
+   "pose_checks": [
+    "Is the person facing the camera?",
+    "Is one arm raised overhead?"
+   ],
+   "orientation": null,
+   "motion_checks": [
+    "the upper body is clearly bent to one side with an arm overhead"
+   ],
+   "visibility": "low",
+   "rom": {},
+   "unilateral": false,
+   "start_angles": {},
+   "min_reps": 2
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+  "vace": {
+    "python": "/home/bnzhao2/miniconda3/envs/wan21/bin/python"
+  },
+  "phantom": {
+    "python": "/home/bnzhao2/miniconda3/envs/wan21/bin/python"
+  },
+  "compose_i2v": {
+    "python": "/home/bnzhao2/miniconda3/envs/wan22/bin/python"
+  },
+  "seedance": {
+    "python": "/home/bnzhao2/miniconda3/envs/standup/bin/python"
+  }
+}

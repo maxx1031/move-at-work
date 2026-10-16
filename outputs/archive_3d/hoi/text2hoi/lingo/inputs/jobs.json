@@ -1,0 +1,156 @@
+{
+ "P1": {
+  "texts": [
+   "A person stands in front of the chair, puts the left foot back on the chair seat, and does a Bulgarian split squat"
+  ],
+  "start": [
+   -0.975,
+   0.0,
+   -0.558
+  ],
+  "end_location": [
+   -1.792,
+   0.0,
+   -1.135
+  ],
+  "episode_num": 10,
+  "note": "verbatim; 0.8 m in front of seat edge, back to chair"
+ },
+ "P1_squat": {
+  "texts": [
+   "squat down"
+  ],
+  "start": [
+   -0.975,
+   0.0,
+   -0.558
+  ],
+  "end_location": [
+   -1.792,
+   0.0,
+   -1.135
+  ],
+  "episode_num": 10,
+  "note": "training-vocab: squat part of the split squat"
+ },
+ "P1_kick": {
+  "texts": [
+   "kick chair with left foot"
+  ],
+  "start": [
+   -0.811,
+   0.0,
+   -0.443
+  ],
+  "end_location": [
+   -0.144,
+   0.0,
+   0.028
+  ],
+  "episode_num": 10,
+  "note": "training-vocab ('kick punching bag with left foot'); 'kick ' turns scene input on"
+ },
+ "P2": {
+  "texts": [
+   "A person walks to the chair and sits down on it"
+  ],
+  "start": [
+   -1.547,
+   0.0,
+   -0.962
+  ],
+  "end_location": [
+   -0.144,
+   0.0,
+   0.028
+  ],
+  "episode_num": 10,
+  "note": "verbatim; 1.5 m in front, pelvis goal = seat centre; contains 'walk' -> pure locomotion mode"
+ },
+ "P2_lingo": {
+  "texts": [
+   "walk",
+   "sit down on chair"
+  ],
+  "start": [
+   -1.547,
+   0.0,
+   -0.962
+  ],
+  "end_location": [
+   -0.144,
+   0.0,
+   0.028
+  ],
+  "episode_num": 10,
+  "note": "LINGO-style 2-segment decomposition (as in demo-21)"
+ },
+ "P3": {
+  "texts": [
+   "A person steps up onto the chair with the right foot"
+  ],
+  "start": [
+   -0.689,
+   0.0,
+   -0.357
+  ],
+  "end_location": [
+   -0.144,
+   0.0,
+   0.028
+  ],
+  "episode_num": 10,
+  "note": "verbatim; 0.45 m in front, facing chair"
+ },
+ "P3_kick": {
+  "texts": [
+   "kick chair with right foot"
+  ],
+  "start": [
+   -0.689,
+   0.0,
+   -0.357
+  ],
+  "end_location": [
+   -0.144,
+   0.0,
+   0.028
+  ],
+  "episode_num": 10,
+  "note": "training-vocab foot-object verb; scene input on"
+ },
+ "P3_crawl": {
+  "texts": [
+   "crawl on to chair"
+  ],
+  "start": [
+   -0.689,
+   0.0,
+   -0.357
+  ],
+  "end_location": [
+   -0.144,
+   0.0,
+   0.028
+  ],
+  "episode_num": 10,
+  "note": "training-vocab ('crawl on to sofa/bed')"
+ },
+ "P4": {
+  "texts": [
+   "A person puts one heel on the chair seat and leans forward to stretch the hamstring"
+  ],
+  "start": [
+   -0.811,
+   0.0,
+   -0.443
+  ],
+  "end_location": [
+   -0.144,
+   0.0,
+   0.028
+  ],
+  "episode_num": 10,
+  "note": "verbatim; 0.6 m in front, facing chair"
+ }
+}

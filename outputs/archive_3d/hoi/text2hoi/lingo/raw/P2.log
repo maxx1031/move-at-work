@@ -1,0 +1,356 @@
+model_joints_to_smplx device:  cuda:0
+train: false
+device: cuda
+batch_size: 1
+interp_s: 3
+use_scheduler: true
+scheduler_model_path: ${oc.env:ROOT_DIR}/ckpts/scheduler/scheduler.pth
+scheduler_threshold: 0.7
+locomotion_threshold: 1.0
+vis: true
+start_type: stand
+repeat_time: 0
+seg_num: 1
+seg_len: 4
+speed: 0.8
+test_setting: P2
+exp_dir: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P2
+ckpt_path: ${oc.env:ROOT_DIR}/ckpts/model/bs128__ws16__scene_occ_two.pth
+input_path: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/inputs/P2.pkl
+smpl_dir: ${oc.env:ROOT_DIR}/smpl_models
+scene_type: occ_two
+max_window_size: 16
+motion_len: 10000000
+load_language: true
+load_scene: true
+use_pi: true
+load_hand_goal: true
+load_pelvis_goal: true
+auto_regre_num: 2
+num_gpus: 1
+num_workers: 0
+dataset:
+  folder: ${oc.env:ROOT_DIR}/dataset
+  device: ${device}
+  batch_size: ${batch_size}
+  step: 3
+  nb_voxels:
+  - 32
+  - 32
+  - 32
+  mesh_grid:
+  - -0.6
+  - 0.6
+  - 0.1
+  - 1.2
+  - -0.6
+  - 0.6
+  vis: ${vis}
+  start_type: ${start_type}
+  test_scene_name: chair_only
+  train: ${train}
+  load_language: ${load_language}
+  load_scene: ${load_scene}
+  load_hand_goal: ${load_hand_goal}
+  load_pelvis_goal: ${load_pelvis_goal}
+  use_pi: ${use_pi}
+  max_window_size: ${max_window_size}
+  joints_ind:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 23
+  - 24
+  - 25
+  - 34
+  - 40
+  - 49
+  nb_joints: 28
+guidance:
+  pelvis:
+    seq_len: ${dataset.seq_len}
+    step: ${dataset.step}
+    mask_ind: 0
+    mask_y: false
+    emb_f: 0
+    no_scene: true
+model:
+  model_smplx:
+    _target_: models.joints_to_smplx.JointsToSMPLX
+    input_dim: ${times:${dataset.nb_joints},3}
+    output_dim: 132
+    hidden_dim: 128
+    ckpt: ${oc.env:ROOT_DIR}/ckpts/joints2smplx/train_joint2smpl__input_84__hidden_128__all__last.pth
+  synhsi_body:
+    _target_: models.synhsi.Unet
+    dim_model: 512
+    num_heads: 16
+    num_layers: 8
+    dropout_p: 0.1
+    nb_voxels: ${dataset.nb_voxels}
+    free_p: 0.1
+    ac_type: last_add_first_token
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_output: ${times:${dataset.nb_joints},3}
+    scene_type: ${scene_type}
+    load_scene: ${load_scene}
+    load_language: ${load_language}
+    load_hand_goal: ${load_hand_goal}
+    load_pelvis_goal: ${load_pelvis_goal}
+    language_feature_dim: 768
+    ckpt: ${ckpt_path}
+  scheduler:
+    num_heads: 8
+    num_layers: 3
+    dropout_p: 0.1
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_model: 512
+    language_feature_dim: 768
+sampler:
+  pelvis:
+    _target_: models.synhsi.Sampler
+    device: ${device}
+    mask_ind: ${guidance.pelvis.mask_ind}
+    emb_f: ${guidance.pelvis.emb_f}
+    batch_size: ${batch_size}
+    channel: ${times:${dataset.nb_joints},3}
+    auto_regre_num: ${auto_regre_num}
+    timesteps: 100
+    motion_len: ${motion_len}
+    scene_type: ${scene_type}
+
+0 Loading Scene Mesh chair_only.npy
+  0%|          | 0/10 [00:00<?, ?it/s]Reflection detected
+pelvis_goal: tensor([[[-0.0236,  0.0000,  0.7996]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.9999, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 113.01it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 112.52it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.13it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.72it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 114.05it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 114.12it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 114.23it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 114.45it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.93it/s]
+ 10%|█         | 1/10 [00:00<00:08,  1.09it/s]Reflection detected
+pelvis_goal: tensor([[[-0.2032,  0.0000,  0.7669]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.9917, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 114.29it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 113.98it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.84it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.88it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 113.96it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 113.98it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 113.65it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 113.58it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.74it/s]
+ 20%|██        | 2/10 [00:01<00:07,  1.11it/s]pelvis_goal: tensor([[[-0.3276,  0.0000,  0.7096]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.9770, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 113.11it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 113.07it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.62it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.73it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 113.93it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 113.55it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 113.50it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 113.64it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.65it/s]
+ 30%|███       | 3/10 [00:02<00:06,  1.12it/s]pelvis_goal: tensor([[[-0.0835,  0.0000,  0.7945]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.9986, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 115.35it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 114.20it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.95it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 114.04it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 113.81it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 113.70it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 113.69it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 113.98it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.97it/s]
+ 40%|████      | 4/10 [00:03<00:05,  1.13it/s]pelvis_goal: tensor([[[0.0071, 0.0000, 0.8000]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(1.0000, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 113.58it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 113.77it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.47it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.25it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 113.75it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 113.94it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 113.94it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 114.14it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.91it/s]
+ 50%|█████     | 5/10 [00:04<00:04,  1.13it/s]pelvis_goal: tensor([[[-0.0220,  0.0000,  0.7996]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.9999, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 113.80it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 113.99it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.88it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.79it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 113.63it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 113.48it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 113.94it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 113.88it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.81it/s]
+ 60%|██████    | 6/10 [00:05<00:03,  1.13it/s]pelvis_goal: tensor([[[-0.2113,  0.0000,  0.5536]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.9836, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 113.70it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 113.97it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.84it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.59it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 113.71it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 113.83it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 114.17it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 114.21it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.97it/s]
+ 70%|███████   | 7/10 [00:06<00:02,  1.13it/s]pelvis_goal: tensor([[[-0.3788,  0.0000,  0.2420]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.8846, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 113.75it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 113.27it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.56it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.51it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 113.47it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 113.60it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 113.40it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 113.38it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 113.48it/s]
+ 80%|████████  | 8/10 [00:07<00:01,  1.13it/s]pelvis_goal: tensor([[[-0.2546,  0.0000, -0.0758]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.6787, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 114.48it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 114.12it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 113.72it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 113.77it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 114.10it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 114.46it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 114.77it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 114.93it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 114.54it/s]
+ 90%|█████████ | 9/10 [00:07<00:00,  1.13it/s]pelvis_goal: tensor([[[-0.0817,  0.0000, -0.1410]]], device='cuda:0') pi:  tensor([0], device='cuda:0') need_pi:  tensor([False], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([True], device='cuda:0') raw_text:  A person walks to the chair and sits down on it speed:  tensor(0.5337, device='cuda:0')
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 115.26it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 114.65it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 114.63it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 114.75it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 114.93it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 115.01it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 114.99it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 114.92it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 114.85it/s]
+100%|██████████| 10/10 [00:08<00:00,  1.14it/s]100%|██████████| 10/10 [00:08<00:00,  1.13it/s]0.0008137807599268854
+0.005390895996242762
+0.0010289460187777877
+0.0013908095424994826
+0.0026190760545432568
+0.0020398704800754786
+0.0009134868741966784
+0.0005053204949945211
+0.0008599254651926458
+0.0011937327217310667
+0.0010368532966822386
+0.0006349260220304132
+0.00039595706039108336
+0.00042459822725504637
+0.0005439378437586129
+0.0005664085620082915
+0.0004616571532096714
+0.0003267494903411716
+0.00026109794271178544
+0.0002729089464992285
+0.00029479313525371253
+0.000274544843705371
+0.00022381238522939384
+0.00018294046458322555
+0.00016901889466680586
+0.00016741847502999008
+0.0001582512486493215
+0.00013851661060471088
+0.00011933336645597592
+0.00010872992424992844
+0.00010338810534449294
+9.606312960386276e-05
+8.500432886648923e-05
+7.459331391146407e-05
+6.872665835544467e-05
+6.562891212524846e-05
+6.0822298109997064e-05
+5.343572411220521e-05
+4.67119061795529e-05
+4.3166543036932126e-05
+4.150347376707941e-05
+3.87247018807102e-05
+3.4181524824816734e-05
+3.0143599360599183e-05
+2.8147078410256654e-05
+2.6886826162808575e-05
+2.459324423398357e-05
+2.169103390770033e-05
+1.982619141926989e-05
+1.9141505617881194e-05
+1.8192271454609e-05
+1.622944364498835e-05
+1.4239593838283326e-05
+1.3367056453716941e-05
+1.3162773939257022e-05
+1.2425371096469462e-05
+1.0986236702592578e-05
+9.804927685763687e-06
+9.50070079852594e-06
+9.41581129154656e-06
+8.708390851097647e-06
+7.661500603717286e-06
+7.135401574487332e-06
+7.163123882492073e-06
+6.988354925852036e-06
+6.335540547297569e-06
+5.722225068893749e-06
+5.540687652683118e-06
+5.53673316971981e-06
+5.315157068253029e-06
+4.9036370910471305e-06
+4.595716745825484e-06
+4.49206481789588e-06
+4.424343842401868e-06
+4.238872861606069e-06
+4.003412414022023e-06
+3.851013389066793e-06
+3.775172444875352e-06
+3.685488991322927e-06
+3.5572861634136643e-06
+3.4346815027674893e-06
+3.3409351090085693e-06
+3.2662335343047744e-06
+3.1979027426132234e-06
+3.124326894976548e-06
+3.0447097287833458e-06
+2.9695186185563216e-06
+2.9131333576515317e-06
+2.8710092010442168e-06
+2.8193837806611555e-06
+2.7562593913899036e-06
+2.7052810764871538e-06
+2.671930587894167e-06
+2.636070121297962e-06
+2.5904666927090148e-06
+2.5492411168670515e-06
+2.5184124297084054e-06
+2.4895045953599038e-06
+2.456760512359324e-06
+2.4243381631094962e-06
+Saved to /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P2/output__P2__0.pkl
+P2 0
+

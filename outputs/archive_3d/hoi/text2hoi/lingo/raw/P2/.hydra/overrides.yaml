@@ -1,0 +1,3 @@
+- input_path=/home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/inputs/P2.pkl
+- exp_dir=/home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P2
+- test_setting=P2

@@ -1,0 +1,256 @@
+model_joints_to_smplx device:  cuda:0
+train: false
+device: cuda
+batch_size: 1
+interp_s: 3
+use_scheduler: true
+scheduler_model_path: ${oc.env:ROOT_DIR}/ckpts/scheduler/scheduler.pth
+scheduler_threshold: 0.7
+locomotion_threshold: 1.0
+vis: true
+start_type: stand
+repeat_time: 0
+seg_num: 1
+seg_len: 4
+speed: 0.8
+test_setting: P4
+exp_dir: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P4
+ckpt_path: ${oc.env:ROOT_DIR}/ckpts/model/bs128__ws16__scene_occ_two.pth
+input_path: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/inputs/P4.pkl
+smpl_dir: ${oc.env:ROOT_DIR}/smpl_models
+scene_type: occ_two
+max_window_size: 16
+motion_len: 10000000
+load_language: true
+load_scene: true
+use_pi: true
+load_hand_goal: true
+load_pelvis_goal: true
+auto_regre_num: 2
+num_gpus: 1
+num_workers: 0
+dataset:
+  folder: ${oc.env:ROOT_DIR}/dataset
+  device: ${device}
+  batch_size: ${batch_size}
+  step: 3
+  nb_voxels:
+  - 32
+  - 32
+  - 32
+  mesh_grid:
+  - -0.6
+  - 0.6
+  - 0.1
+  - 1.2
+  - -0.6
+  - 0.6
+  vis: ${vis}
+  start_type: ${start_type}
+  test_scene_name: chair_only
+  train: ${train}
+  load_language: ${load_language}
+  load_scene: ${load_scene}
+  load_hand_goal: ${load_hand_goal}
+  load_pelvis_goal: ${load_pelvis_goal}
+  use_pi: ${use_pi}
+  max_window_size: ${max_window_size}
+  joints_ind:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 23
+  - 24
+  - 25
+  - 34
+  - 40
+  - 49
+  nb_joints: 28
+guidance:
+  pelvis:
+    seq_len: ${dataset.seq_len}
+    step: ${dataset.step}
+    mask_ind: 0
+    mask_y: false
+    emb_f: 0
+    no_scene: true
+model:
+  model_smplx:
+    _target_: models.joints_to_smplx.JointsToSMPLX
+    input_dim: ${times:${dataset.nb_joints},3}
+    output_dim: 132
+    hidden_dim: 128
+    ckpt: ${oc.env:ROOT_DIR}/ckpts/joints2smplx/train_joint2smpl__input_84__hidden_128__all__last.pth
+  synhsi_body:
+    _target_: models.synhsi.Unet
+    dim_model: 512
+    num_heads: 16
+    num_layers: 8
+    dropout_p: 0.1
+    nb_voxels: ${dataset.nb_voxels}
+    free_p: 0.1
+    ac_type: last_add_first_token
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_output: ${times:${dataset.nb_joints},3}
+    scene_type: ${scene_type}
+    load_scene: ${load_scene}
+    load_language: ${load_language}
+    load_hand_goal: ${load_hand_goal}
+    load_pelvis_goal: ${load_pelvis_goal}
+    language_feature_dim: 768
+    ckpt: ${ckpt_path}
+  scheduler:
+    num_heads: 8
+    num_layers: 3
+    dropout_p: 0.1
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_model: 512
+    language_feature_dim: 768
+sampler:
+  pelvis:
+    _target_: models.synhsi.Sampler
+    device: ${device}
+    mask_ind: ${guidance.pelvis.mask_ind}
+    emb_f: ${guidance.pelvis.emb_f}
+    batch_size: ${batch_size}
+    channel: ${times:${dataset.nb_joints},3}
+    auto_regre_num: ${auto_regre_num}
+    timesteps: 100
+    motion_len: ${motion_len}
+    scene_type: ${scene_type}
+
+0 Loading Scene Mesh chair_only.npy
+  0%|          | 0/10 [00:00<?, ?it/s]Reflection detected
+pelvis_goal: tensor([[[0.1132, 0.0000, 0.8087]]], device='cuda:0') pi:  tensor([42], device='cuda:0') need_pi:  tensor([True], device='cuda:0') need_scene:  tensor([False], device='cuda:0') need_pelvis_dir:  tensor([False], device='cuda:0') raw_text:  A person puts one heel on the chair seat and leans forward to stretch the hamstring speed:  None
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 110.93it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 112.41it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 114.29it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 115.14it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 115.79it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 116.27it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 116.58it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 116.77it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 115.78it/s]
+  0%|          | 0/10 [00:00<?, ?it/s]0.001238956581801176
+0.005184455309063196
+0.0013220376567915082
+0.0014668209478259087
+0.002403301652520895
+0.0016817349242046475
+0.0007764409529045224
+0.0008133700466714799
+0.0012053409591317177
+0.0011274106800556183
+0.000692500441800803
+0.0004468193801585585
+0.0005331923603080213
+0.0006775208748877048
+0.0006485411431640387
+0.00048811291344463825
+0.00035250012297183275
+0.0003114007122348994
+0.00032283796463161707
+0.0003235321200918406
+0.0002974137896671891
+0.00026217455160804093
+0.00023386275279335678
+0.00021191779524087906
+0.00019013536802958697
+0.00017228542128577828
+0.00016268561012111604
+0.00015639903722330928
+0.00014513837231788784
+0.00012657373736146837
+0.00010895262676058337
+0.00010188243322772905
+0.00010188280430156738
+9.63347774813883e-05
+8.233441621996462e-05
+7.13949411874637e-05
+7.084307435434312e-05
+7.197407830972224e-05
+6.420965655706823e-05
+5.220189268584363e-05
+4.798885129275732e-05
+5.1243496272945777e-05
+5.0112459575757384e-05
+4.0975417505251244e-05
+3.3985019399551675e-05
+3.560318145900965e-05
+3.798975012614392e-05
+3.335654400871135e-05
+2.7099502403871156e-05
+2.6668778446037322e-05
+2.846205825335346e-05
+2.5869843739201315e-05
+2.136949115083553e-05
+2.0691701138275675e-05
+2.209349077020306e-05
+2.0668037905124947e-05
+1.7552354620420374e-05
+1.6530022548977286e-05
+1.68742972164182e-05
+1.61134812515229e-05
+1.4924558854545467e-05
+1.4512459529214539e-05
+1.387881002301583e-05
+1.2604944458871614e-05
+1.1937127055716701e-05
+1.2075657650711946e-05
+1.182291998702567e-05
+1.0913295227510389e-05
+1.0202605153608602e-05
+9.947337275661994e-06
+9.702246643428225e-06
+9.367381608171854e-06
+9.08481433725683e-06
+8.728175998840015e-06
+8.261169568868354e-06
+7.950534381961916e-06
+7.828235538909212e-06
+7.647613529115915e-06
+7.354620720434468e-06
+7.07467779648141e-06
+6.849441888334695e-06
+6.669245067314478e-06
+6.52903599984711e-06
+6.361056875903159e-06
+6.136556748970179e-06
+5.943648829997983e-06
+5.824334039061796e-06
+5.692994363926118e-06
+5.518993475561729e-06
+5.38029189556255e-06
+5.2793920986005105e-06
+5.146308467374183e-06
+5.002080797567032e-06
+4.90311367684626e-06
+4.811764938494889e-06
+4.692079073720379e-06
+4.583281224768143e-06
+4.500713203015039e-06
+4.409489974932512e-06
+4.30995351052843e-06
+Saved to /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P4/output__P4__0.pkl
+P4 0
+

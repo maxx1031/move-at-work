@@ -1,0 +1,22 @@
+{
+  "scene": "/home/bnzhao2/move-at-work/work/human_video/scene.json",
+  "cameras": "/home/bnzhao2/move-at-work/work/human_video/cameras.json",
+  "source": "work/human_video/gvhmr/smplx_incam_f24mm.npz",
+  "rear_foot": "right",
+  "final_losses": {
+    "kp2d": 0.49175453186035156,
+    "rear_contact": 1.71756273630308e-05,
+    "rear_toe": 5.955891992925899e-06,
+    "rear_static": 3.432728772168048e-05,
+    "front_sole": 2.8001252871945326e-07,
+    "front_static": 4.714900569524616e-06,
+    "pen": 0.00020255945855751634,
+    "floor": 2.6635078143044666e-07,
+    "prior": 0.3135043680667877,
+    "smooth": 0.0009119948372244835
+  },
+  "scene_notes": [
+    "generated mesh work/human_video/sam3d/chair.glb aligned to measured points work/human_video/chair_points_world.npy",
+    "{\"yaw_deg\": 2.0, \"shift_m\": [-0.039999999999999994, 0.04000000000000001], \"trimmed_cost_m\": 0.026672769337892532, \"point_to_mesh_m_median\": 0.037845220416784286, \"point_to_mesh_m_p90\": 0.1184425085783005, \"height_m\": 0.7855787473917006, \"footprint_m\": [0.6291980975233382, 0.6280275945307366], \"height_scale\": 0.8660781095305378, \"init\": \"sam3d_pose\"}"
+  ]
+}

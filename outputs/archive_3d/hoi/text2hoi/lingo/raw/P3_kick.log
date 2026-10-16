@@ -1,0 +1,279 @@
+model_joints_to_smplx device:  cuda:0
+train: false
+device: cuda
+batch_size: 1
+interp_s: 3
+use_scheduler: true
+scheduler_model_path: ${oc.env:ROOT_DIR}/ckpts/scheduler/scheduler.pth
+scheduler_threshold: 0.7
+locomotion_threshold: 1.0
+vis: true
+start_type: stand
+repeat_time: 0
+seg_num: 1
+seg_len: 4
+speed: 0.8
+test_setting: P3_kick
+exp_dir: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P3_kick
+ckpt_path: ${oc.env:ROOT_DIR}/ckpts/model/bs128__ws16__scene_occ_two.pth
+input_path: /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/inputs/P3_kick.pkl
+smpl_dir: ${oc.env:ROOT_DIR}/smpl_models
+scene_type: occ_two
+max_window_size: 16
+motion_len: 10000000
+load_language: true
+load_scene: true
+use_pi: true
+load_hand_goal: true
+load_pelvis_goal: true
+auto_regre_num: 2
+num_gpus: 1
+num_workers: 0
+dataset:
+  folder: ${oc.env:ROOT_DIR}/dataset
+  device: ${device}
+  batch_size: ${batch_size}
+  step: 3
+  nb_voxels:
+  - 32
+  - 32
+  - 32
+  mesh_grid:
+  - -0.6
+  - 0.6
+  - 0.1
+  - 1.2
+  - -0.6
+  - 0.6
+  vis: ${vis}
+  start_type: ${start_type}
+  test_scene_name: chair_only
+  train: ${train}
+  load_language: ${load_language}
+  load_scene: ${load_scene}
+  load_hand_goal: ${load_hand_goal}
+  load_pelvis_goal: ${load_pelvis_goal}
+  use_pi: ${use_pi}
+  max_window_size: ${max_window_size}
+  joints_ind:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 23
+  - 24
+  - 25
+  - 34
+  - 40
+  - 49
+  nb_joints: 28
+guidance:
+  pelvis:
+    seq_len: ${dataset.seq_len}
+    step: ${dataset.step}
+    mask_ind: 0
+    mask_y: false
+    emb_f: 0
+    no_scene: true
+model:
+  model_smplx:
+    _target_: models.joints_to_smplx.JointsToSMPLX
+    input_dim: ${times:${dataset.nb_joints},3}
+    output_dim: 132
+    hidden_dim: 128
+    ckpt: ${oc.env:ROOT_DIR}/ckpts/joints2smplx/train_joint2smpl__input_84__hidden_128__all__last.pth
+  synhsi_body:
+    _target_: models.synhsi.Unet
+    dim_model: 512
+    num_heads: 16
+    num_layers: 8
+    dropout_p: 0.1
+    nb_voxels: ${dataset.nb_voxels}
+    free_p: 0.1
+    ac_type: last_add_first_token
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_output: ${times:${dataset.nb_joints},3}
+    scene_type: ${scene_type}
+    load_scene: ${load_scene}
+    load_language: ${load_language}
+    load_hand_goal: ${load_hand_goal}
+    load_pelvis_goal: ${load_pelvis_goal}
+    language_feature_dim: 768
+    ckpt: ${ckpt_path}
+  scheduler:
+    num_heads: 8
+    num_layers: 3
+    dropout_p: 0.1
+    dim_input: ${times:${dataset.nb_joints},3}
+    dim_model: 512
+    language_feature_dim: 768
+sampler:
+  pelvis:
+    _target_: models.synhsi.Sampler
+    device: ${device}
+    mask_ind: ${guidance.pelvis.mask_ind}
+    emb_f: ${guidance.pelvis.emb_f}
+    batch_size: ${batch_size}
+    channel: ${times:${dataset.nb_joints},3}
+    auto_regre_num: ${auto_regre_num}
+    timesteps: 100
+    motion_len: ${motion_len}
+    scene_type: ${scene_type}
+
+0 Loading Scene Mesh chair_only.npy
+  0%|          | 0/10 [00:00<?, ?it/s]pelvis_goal: tensor([[[0.0924, 0.0000, 0.6601]]], device='cuda:0') pi:  tensor([42], device='cuda:0') need_pi:  tensor([True], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([False], device='cuda:0') raw_text:  kick chair with right foot speed:  None
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  11%|█         | 11/100 [00:00<00:00, 109.46it/s][A
+sampling loop time step:  23%|██▎       | 23/100 [00:00<00:00, 111.59it/s][A
+sampling loop time step:  35%|███▌      | 35/100 [00:00<00:00, 113.37it/s][A
+sampling loop time step:  47%|████▋     | 47/100 [00:00<00:00, 114.28it/s][A
+sampling loop time step:  59%|█████▉    | 59/100 [00:00<00:00, 114.99it/s][A
+sampling loop time step:  71%|███████   | 71/100 [00:00<00:00, 115.46it/s][A
+sampling loop time step:  83%|████████▎ | 83/100 [00:00<00:00, 114.90it/s][A
+sampling loop time step:  95%|█████████▌| 95/100 [00:00<00:00, 114.32it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 114.08it/s]
+ 10%|█         | 1/10 [00:00<00:08,  1.05it/s]Reflection detected
+pelvis_goal: tensor([[[0.0282, 0.0000, 0.6725]]], device='cuda:0') pi:  tensor([84], device='cuda:0') need_pi:  tensor([True], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([False], device='cuda:0') raw_text:  kick chair with right foot speed:  None
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 114.33it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 113.78it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 114.50it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 115.42it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 116.05it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 115.84it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 115.77it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 115.93it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 115.57it/s]
+ 20%|██        | 2/10 [00:01<00:07,  1.11it/s]Reflection detected
+pelvis_goal: tensor([[[0.1532, 0.0000, 0.6752]]], device='cuda:0') pi:  tensor([126], device='cuda:0') need_pi:  tensor([True], device='cuda:0') need_scene:  tensor([True], device='cuda:0') need_pelvis_dir:  tensor([False], device='cuda:0') raw_text:  kick chair with right foot speed:  None
+
+sampling loop time step:   0%|          | 0/100 [00:00<?, ?it/s][A
+sampling loop time step:  12%|█▏        | 12/100 [00:00<00:00, 116.27it/s][A
+sampling loop time step:  24%|██▍       | 24/100 [00:00<00:00, 116.14it/s][A
+sampling loop time step:  36%|███▌      | 36/100 [00:00<00:00, 115.41it/s][A
+sampling loop time step:  48%|████▊     | 48/100 [00:00<00:00, 115.25it/s][A
+sampling loop time step:  60%|██████    | 60/100 [00:00<00:00, 115.76it/s][A
+sampling loop time step:  72%|███████▏  | 72/100 [00:00<00:00, 116.03it/s][A
+sampling loop time step:  84%|████████▍ | 84/100 [00:00<00:00, 115.94it/s][A
+sampling loop time step:  96%|█████████▌| 96/100 [00:00<00:00, 115.98it/s][Asampling loop time step: 100%|██████████| 100/100 [00:00<00:00, 115.84it/s]
+ 20%|██        | 2/10 [00:02<00:10,  1.34s/it]0.0008892517653293908
+0.0057243164628744125
+0.0009344219579361379
+0.0013452593702822924
+0.0028823998291045427
+0.002171708270907402
+0.0007826030487194657
+0.0004098224453628063
+0.0010007817763835192
+0.001386488787829876
+0.0010564493713900447
+0.0005203435430303216
+0.0003385864256415516
+0.0005030531319789588
+0.0006664744578301907
+0.000619193771854043
+0.00042982373270206153
+0.0002828929282259196
+0.00026962527772411704
+0.0003259684890508652
+0.0003386289463378489
+0.0002769463462755084
+0.00020275585120543838
+0.00017411964654456824
+0.00018473529780749232
+0.00019271335622761399
+0.00017299137834925205
+0.0001378580927848816
+0.00011486283619888127
+0.00011248861846979707
+0.00011436513887019828
+0.00010485677921678871
+8.847112621879205e-05
+7.764802285237238e-05
+7.376327266683802e-05
+6.983803905313835e-05
+6.345214933389798e-05
+5.760391286457889e-05
+5.310108099365607e-05
+4.777404683409259e-05
+4.184544741292484e-05
+3.848825872410089e-05
+3.821638892986812e-05
+3.6755514884134755e-05
+3.118244421784766e-05
+2.514666812203359e-05
+2.3762695491313934e-05
+2.5686194931040518e-05
+2.5170556909870356e-05
+2.079314253933262e-05
+1.6890218830667436e-05
+1.6414174751844257e-05
+1.719747706374619e-05
+1.6261543350992724e-05
+1.400143446517177e-05
+1.245608837052714e-05
+1.1990481652901508e-05
+1.1544871995283756e-05
+1.0723013474489562e-05
+9.947731996362563e-06
+9.314708222518675e-06
+8.634582627564669e-06
+8.091456948022824e-06
+7.871734851505607e-06
+7.6024566624255385e-06
+6.936149020475568e-06
+6.245028089324478e-06
+6.0717002270394005e-06
+6.202814802236389e-06
+5.943058113189181e-06
+5.238166522758547e-06
+4.789964350493392e-06
+4.906525646219961e-06
+5.019398486183491e-06
+4.647151399694849e-06
+4.136425104661612e-06
+4.0226991586678196e-06
+4.1706798583618365e-06
+4.077639914612519e-06
+3.7257802887324942e-06
+3.524615294736577e-06
+3.5692903566086898e-06
+3.5558043691708008e-06
+3.3588789847271983e-06
+3.1876395496510668e-06
+3.1642223348171683e-06
+3.147210463794181e-06
+3.031438836842426e-06
+2.9156531127227936e-06
+2.8818767532357015e-06
+2.852598527169903e-06
+2.767078058241168e-06
+2.6898414944298565e-06
+2.6629500098351855e-06
+2.6303296181140468e-06
+2.562682766438229e-06
+2.505482370906975e-06
+2.4789819690340664e-06
+2.4491607746313093e-06
+2.400425955784158e-06
+Saved to /home/bnzhao2/move-at-work/outputs/hoi/text2hoi/lingo/raw/P3_kick/output__P3_kick__0.pkl
+P3_kick 0
+
