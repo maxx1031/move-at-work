@@ -132,17 +132,21 @@ class BedrockVLM(VLM):
             content.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
                                                          "data": _jpeg_b64(im)}})
         content.append({"type": "text", "text": text})
-        params = {"max_tokens": 16000, "effort": self.effort}
-        with T.llm_span(self.name, images, text, params) as s:
-            r = self.client.beta.messages.create(model=self.name, max_tokens=16000,
+        # Thinking is always on; display="summarized" returns a readable summary of it (the default, "omitted",
+        # returns empty thinking blocks). It costs nothing extra and is recorded on the trace as the reasoning.
+        thinking = {"type": "adaptive", "display": "summarized"}
+        params = {"max_tokens": 16000, "effort": self.effort, "thinking": thinking}
+        with T.llm_span(self.name, images, text, params, provider="aws", system="anthropic") as s:
+            r = self.client.beta.messages.create(model=self.name, max_tokens=16000, thinking=thinking,
                                                  output_config={"effort": self.effort},
                                                  messages=[{"role": "user", "content": content}])
             raw = "".join(b.text for b in r.content if b.type == "text")
+            reasoning = "\n\n".join(b.thinking for b in r.content if b.type == "thinking" and b.thinking)
             if r.stop_reason == "refusal":
                 T.event("vlm.refusal", category=str(getattr(r.stop_details, "category", None)))
                 raw = ""
             s.set_attribute("llm.model_name", r.model)
-            T.set_llm_output(s, raw, r.usage.input_tokens, r.usage.output_tokens)
+            T.set_llm_output(s, raw, r.usage.input_tokens, r.usage.output_tokens, reasoning=reasoning)
         return raw
 
 

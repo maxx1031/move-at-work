@@ -42,7 +42,15 @@ affordance ─suits→ exercise           built by db.seed(): full-text search o
                                       limited to bodyweight/stretch exercises
 upload ─contains→ scene_object ─affords→ affordance
 upload ─recommends→ exercise          Claude's 3 picks, pointing at the real ExRx records
+demo_video:<exercise id>              a playable YouTube demo we picked (ExRx's own videos only play on exrx.net)
 ```
+
+- `seed()` only keeps bodyweight/stretch exercises that **have a demo video**. It also drops anything unsuitable for an
+  office (`EXCLUDE`: inverted moves, jumps, gym-only equipment), and `seat` never maps to step-ups.
+- Demo videos are curated in `webapp/demo_videos.csv`. Run `python -m webapp.demo_videos export` to list the
+  candidate exercises, fill in `youtube_url` (and optionally `start_s`), then run `... load` to write them to
+  `demo_video`; `... status` shows coverage. The app embeds our pick first, then a YouTube video ExRx itself used,
+  and otherwise links out to the ExRx page.
 
 - `export_catalog()` reads `affordance -suits-> exercise` and produces the candidate list sent to the planner, so the
   planner can only choose exercises that exist in the graph.
@@ -82,6 +90,11 @@ from a run share a `session.id`.
 
 - `LLM` spans: every Claude call, with prompt, output, token counts and (optionally) the input frames as images.
   Set `STANDUP_TRACE_IMAGES=0` to leave the images out.
+- Claude runs with adaptive thinking (`display: "summarized"`); the summary is recorded on the LLM span as a
+  *reasoning* part before the answer, so Arize shows why the model picked each spot.
+- `EVALUATOR` spans: `judge.frames` / `judge.video` verdicts (scores, issue, range of motion). They join the
+  `compose_start_frame` / `generate_video` / `backend.<route>` spans of the video path via `STANDUP_TRACEPARENT`.
+- Spans that finish without error are marked `OK` (not `UNSET`), so failures are easy to filter.
 - `GUARDRAIL` spans: `safety_guardrails` and `plan_validation`, with a `guardrail.override` event every time a safety
   rule overrides the model.
 - `CHAIN` / `TOOL` / `AGENT` spans: transcoding, sandbox create/upload/plan/download/delete, and backend jobs.

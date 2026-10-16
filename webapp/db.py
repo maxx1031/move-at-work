@@ -4,7 +4,7 @@ The scraped ExRx graph (exercise, equipment, muscle, joint, uses, works, moves, 
 adds its own tables next to it:
 
     affordance ─suits→ exercise          which ExRx exercises a kind of spot supports (found by full-text search
-                                          over exercise.search_text, limited to bodyweight / stretch exercises)
+                                          over exercise.search_text, limited to bodyweight / stretch exercises that have a demo video)
     upload ─contains→ scene_object ─affords→ affordance
     upload ─recommends→ exercise          Claude's 3 picks, pointing at the real ExRx records
 
@@ -21,7 +21,7 @@ from surrealdb import RecordID, Surreal
 CATALOG = Path(__file__).resolve().parents[1] / "standup_agent" / "catalog.json"  # affordance definitions
 # Short phrases: SurrealDB's @@ full-text match requires every term, so each phrase is searched on its own.
 SEARCH = {
-    "seat": ["bench dip", "chair", "seated", "step-up", "box squat", "sit"],
+    "seat": ["bench dip", "chair", "seated", "box squat", "sit"],  # never step-ups: chairs are not steps
     "table_edge": ["incline push-up", "table", "desk", "counter"],
     "wall": ["wall"],
     "rail": ["rail", "heel elevated", "leg swing", "assisted squat"],
@@ -29,8 +29,11 @@ SEARCH = {
     "floor_open": ["lunge", "squat", "march", "standing", "jumping jack"],
 }
 BODYWEIGHT = ["Body Weight", "Bodyweight", "Stretch", "Self-assisted", "Isometric"]
+# Not for an office: inverted / neck-loading moves, jumps, and equipment you won't find at work.
+EXCLUDE = ["handstand", "neck bridge", "headstand", "stability ball", "roman chair", "between benches", "partner",
+           "jump", "plyo", "suspen", "trx", "pole", "pull-up", "chin-up", "inverted", "balance board", "lever"]
 PER_AFFORDANCE = 12
-APP_TABLES = ["affordance", "upload", "scene_object"]
+APP_TABLES = ["affordance", "upload", "scene_object", "demo_video"]
 APP_EDGES = ["suits", "contains", "affords", "recommends"]
 
 
@@ -85,10 +88,13 @@ def seed():
             hits = {}
             for phrase in SEARCH.get(name, []):
                 rows = db.query(
-                    "SELECT id, search::score(1) AS score FROM exercise WHERE search_text @1@ $q "
+                    "SELECT id, name, search::score(1) AS score FROM exercise WHERE search_text @1@ $q "
                     "AND ->uses->equipment.name ANYINSIDE $bw AND section != 'Plyometrics' "
+                    "AND array::len(media[WHERE kind = 'video']) > 0 "
                     "ORDER BY score DESC LIMIT $n;", {"q": phrase, "bw": BODYWEIGHT, "n": PER_AFFORDANCE})
                 for r in rows:
+                    if any(w in r["name"].lower() for w in EXCLUDE):
+                        continue
                     key = r["id"].id
                     if key not in hits or r["score"] > hits[key][0]:
                         hits[key] = (r["score"], phrase)
@@ -167,13 +173,45 @@ def save_plan(upload_id, plan):
                       "frame": f"/api/uploads/{upload_id}/frame/{s['rank']}.jpg"}})
 
 
+YOUTUBE_ID = re.compile(r"(?:youtu\.be/|v=|/embed/|/shorts/)([\w-]{11})")
+
+
+def youtube_id(text):
+    """The 11-character video id from any YouTube URL form (or a bare id), else None."""
+    text = (text or "").strip()
+    if re.fullmatch(r"[\w-]{11}", text):
+        return text
+    m = YOUTUBE_ID.search(text)
+    return m.group(1) if m else None
+
+
+def youtube_embed(vid, start=None):
+    start = f"&start={int(start)}" if start else ""
+    return f"https://www.youtube-nocookie.com/embed/{vid}?rel=0&modestbranding=1{start}"
+
+
 def video_embed(video):
     """An iframe URL that plays outside exrx.net, or None. Only YouTube qualifies: every sampled ExRx Vimeo
     video is domain-restricted to exrx.net (player answers 403 elsewhere)."""
     if not video or video.get("provider") != "youtube":
         return None
-    m = re.search(r"(?:v=|/embed/)([\w-]{11})", video.get("url", "") + " " + video.get("embed_url", ""))
-    return f"https://www.youtube-nocookie.com/embed/{m.group(1)}?rel=0&modestbranding=1" if m else None
+    vid = youtube_id(video.get("url", "") + " " + video.get("embed_url", ""))
+    return youtube_embed(vid) if vid else None
+
+
+def set_demo_video(exercise_id, url, start=None, note=""):
+    """Store a playable demo video (YouTube) for an exercise in the `demo_video` table; empty url removes it."""
+    rid = RecordID("demo_video", exercise_id)
+    with connect() as db:
+        if not url:
+            db.delete(rid)
+            return None
+        vid = youtube_id(url)
+        if not vid:
+            raise ValueError(f"not a YouTube URL or id: {url!r}")
+        db.upsert(rid, {"exercise": RecordID("exercise", exercise_id), "youtube_id": vid,
+                        "start": int(start) if start else None, "note": note})
+        return vid
 
 
 def recommendations(upload_id):
@@ -187,12 +225,18 @@ def recommendations(upload_id):
         options = db.query("SELECT VALUE array::distinct(array::flatten(->contains->scene_object->affords->affordance"
                            "->suits->exercise.name)) FROM ONLY $u;", {"u": u})
         upload = _one(db.select(u))
+        ids = [r["exercise"]["id"].id for r in recs]
+        demos = {d["id"].id: d for d in db.query(
+            "SELECT id, youtube_id, start FROM demo_video WHERE id INSIDE $ids;",
+            {"ids": [RecordID("demo_video", i) for i in ids]}) or []}
     recs = _plain(recs)
     for r in recs:
         ex = r["exercise"]
         media = ex.pop("media", None) or []
         video = next((m for m in media if m.get("kind") == "video"), None)
-        ex["video_embed"] = video_embed(video)
+        demo = demos.get(ex["id"])
+        # Priority: our own pick (demo_video table) -> a YouTube video ExRx itself used -> link out to ExRx.
+        ex["video_embed"] = youtube_embed(demo["youtube_id"], demo.get("start")) if demo else video_embed(video)
         # ExRx's Vimeo player and GIFs refuse to load on other sites (domain-restricted), so those
         # exercises link out to their ExRx page, where ExRx's own player plays them.
         ex["video_link"] = ex.get("source_url") if video and not ex["video_embed"] else None

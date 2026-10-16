@@ -70,17 +70,30 @@ def build_prompts(sugg: R.Suggestion, identity: dict, scene_desc: str, fps=24):
 
 
 def _call(cmd, log_path, gpu):
+    """Run a step as a subprocess; it gets the current span as STANDUP_TRACEPARENT (the judge's spans join it)."""
     with open(log_path, "a") as log:
         log.write("\n$ " + " ".join(map(str, cmd)) + "\n")
         log.flush()
         return subprocess.call([str(c) for c in cmd], cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT,
-                               env={**os.environ, "CUDA_VISIBLE_DEVICES": str(gpu), "PIP_CONFIG_FILE": "/dev/null"})
+                               env={**os.environ, "CUDA_VISIBLE_DEVICES": str(gpu), "PIP_CONFIG_FILE": "/dev/null",
+                                    "STANDUP_TRACEPARENT": T.inject().get("traceparent", "")})
 
 
 def compose_start_frame(sugg_jobs, registry, gpu, n_cands, rounds=2):
     """Best-of-N start frame: Qwen-Image-Edit composes n candidates, the judge checks each (pose checklist,
     anatomy, one person, scene unchanged, identity). If none passes, another batch with new seeds is composed."""
     j0 = sugg_jobs[0]
+    # Worker threads start with an empty trace context: join the plan's trace through the job's stored context.
+    with T.span("compose_start_frame", "CHAIN", input={"suggestion": Path(j0["out_dir"]).parent.name},
+                parent=T.extract(j0.get("trace_context")), metadata={"gpu": gpu, "n_cands": n_cands}) as s:
+        start = _compose_start_frame(j0, registry, gpu, n_cands, rounds)
+        T.set_output(s, {"start_frame": start})
+        if start is None:
+            T.fail(s, "no start frame candidate was composed")
+    return start
+
+
+def _compose_start_frame(j0, registry, gpu, n_cands, rounds):
     d = Path(j0["out_dir"]).parent / "start"
     d.mkdir(parents=True, exist_ok=True)
     best = d / "start_frame.png"
@@ -102,12 +115,16 @@ def compose_start_frame(sugg_jobs, registry, gpu, n_cands, rounds=2):
             instr = ["--instruction", j0["start_pose_instruction"] + " The person is turned toward the LEFT side of "
                      "the image, shown in side view.", "--alt_instruction", j0["start_pose_instruction"] +
                      " The person is turned toward the RIGHT side of the image, shown in side view."]
-        _call([py, REPO / "standup_agent/backends/compose_i2v/compose.py", "--scene", j0["scene_frame"],
-               "--identity", *j0["identity_photos"], *instr, "--out", first,
-               "--width", W, "--height", H, "--seed", seed, "--extra_seeds", *[seed + k for k in range(1, n_cands)]],
-              d / "log.txt", gpu)
-        cands += [str(c) for c in [first] + [d / f"cand_r{rnd}_s{seed + k}.png" for k in range(1, n_cands)]
-                  if Path(c).exists()]
+        with T.span("compose_candidates", "CHAIN", input={"round": rnd, "seed": seed, "n": n_cands}) as c:
+            rc = _call([py, REPO / "standup_agent/backends/compose_i2v/compose.py", "--scene", j0["scene_frame"],
+                        "--identity", *j0["identity_photos"], *instr, "--out", first, "--width", W, "--height", H,
+                        "--seed", seed, "--extra_seeds", *[seed + k for k in range(1, n_cands)]], d / "log.txt", gpu)
+            new = [str(x) for x in [first] + [d / f"cand_r{rnd}_s{seed + k}.png" for k in range(1, n_cands)]
+                   if Path(x).exists()]
+            T.set_output(c, {"rc": rc, "candidates": new})
+            if not new:
+                T.fail(c, f"compose produced no candidates (exit {rc})")
+        cands += new
         if not cands:
             continue
         if _call([sys.executable, "-m", "standup_agent.judge", "frames", "--job", jf, "--cands", *cands,
@@ -123,6 +140,17 @@ def compose_start_frame(sugg_jobs, registry, gpu, n_cands, rounds=2):
 
 def generate_video(job, registry, gpu, retries):
     """Run one video backend from the start frame; judge the video; retry with a new seed if it fails."""
+    with T.span("generate_video", "CHAIN", input={"job_id": job["job_id"], "exercise": job.get("exercise")},
+                parent=T.extract(job.get("trace_context")), metadata={"route": job["route"], "gpu": gpu}) as s:
+        r = _generate_video(job, registry, gpu, retries)
+        T.set_output(s, {"passed": r["passed"], "video": r["video"], "attempts": len(r["attempts"]),
+                         "scores": (r["check"] or {}).get("scores"), "issue": (r["check"] or {}).get("issue")})
+        if not r["video"]:
+            T.fail(s, "no attempt produced a video")
+    return r
+
+
+def _generate_video(job, registry, gpu, retries):
     out = Path(job["out_dir"])
     py = os.path.expanduser(registry[job["route"]]["python"])
     attempts = []
@@ -132,8 +160,12 @@ def generate_video(job, registry, gpu, retries):
         jk = dict(job, out_dir=str(d), seed=int(job["seed"]) + 1000 * k)
         (d / "job.json").write_text(json.dumps(jk, indent=2))
         t0 = time.time()
-        rc = _call([py, REPO / f"standup_agent/backends/{job['route']}/run.py", "--job", d / "job.json"],
-                   d / "log.txt", gpu)
+        with T.span(f"backend.{job['route']}", "CHAIN", input={"attempt": k, "seed": jk["seed"]}) as b:
+            rc = _call([py, REPO / f"standup_agent/backends/{job['route']}/run.py", "--job", d / "job.json"],
+                       d / "log.txt", gpu)
+            T.set_output(b, {"rc": rc, "seconds": round(time.time() - t0, 1)})
+            if rc != 0:
+                T.fail(b, (d / "error.txt").read_text()[-2000:] if (d / "error.txt").exists() else f"exit {rc}")
         att = dict(attempt=k, rc=rc, seconds=round(time.time() - t0, 1), video=None, check=None)
         if rc == 0 and (d / "video.mp4").exists():
             att["video"] = str(d / "video.mp4")

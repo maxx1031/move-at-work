@@ -9,6 +9,7 @@ Both write JSON with per-criterion scores (0-10) and an overall decision.
 """
 import argparse
 import json
+import os
 from pathlib import Path
 
 import cv2
@@ -16,6 +17,7 @@ import numpy as np
 from PIL import Image
 
 from . import reasoner as R
+from . import tracing as T
 
 CHECK_Q = """Look at this image of a person. Answer each question strictly with true or false:
 {questions}
@@ -417,7 +419,16 @@ def main():
     a = ap.parse_args()
     job = json.loads(Path(a.job).read_text())
     vlm = R.VLM(a.vlm)
-    res = judge_frames(vlm, job, a.cands) if a.what == "frames" else judge_video(vlm, job, a.video)
+    # run.py passes its current span (compose_start_frame / generate_video) so the verdict joins that trace.
+    tp = os.environ.get("STANDUP_TRACEPARENT")
+    with T.span(f"judge.{a.what}", "EVALUATOR", input={"job_id": job.get("job_id"), "video": a.video,
+                                                       "candidates": a.cands},
+                parent=T.extract({"traceparent": tp}) if tp else None,
+                metadata={"exercise": job.get("exercise"), "route": job.get("route")}) as s:
+        res = judge_frames(vlm, job, a.cands) if a.what == "frames" else judge_video(vlm, job, a.video)
+        T.set_output(s, {k: res.get(k) for k in ("passed", "failed", "scores", "issue", "range_of_motion")}
+                     if a.what == "video" else {k: res.get(k) for k in ("best", "best_passed")})
+    T.flush()
     Path(a.out).write_text(json.dumps(res, indent=2))
     print(json.dumps(res if a.what == "video" else {"best": res["best"], "passed": res["best_passed"]}, indent=None))
 

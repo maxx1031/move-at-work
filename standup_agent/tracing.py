@@ -105,6 +105,9 @@ def span(name, kind="CHAIN", input=None, parent=None, metadata=None, **attrs):
     a.update(attrs)
     with tracer.start_as_current_span(name, context=parent, attributes=_flat(a)) as s:
         yield s
+        # A raised exception marks the span ERROR, but success is never marked: without this it exports as UNSET.
+        if getattr(getattr(s, "status", None), "status_code", None) == trace.StatusCode.UNSET:
+            s.set_status(trace.Status(trace.StatusCode.OK))
 
 
 def set_output(s, value, **attrs):
@@ -133,10 +136,11 @@ def _image_url(im, side=256):
 
 
 @contextmanager
-def llm_span(model_name, images, text, params):
+def llm_span(model_name, images, text, params, provider="local", system=None):
     """An LLM span for one VLM call: the labelled images and question as one user message."""
     m = "llm.input_messages.0.message"
-    a = {"llm.model_name": model_name, "llm.provider": "local", "llm.invocation_parameters": json.dumps(params),
+    a = {"llm.model_name": model_name, "llm.provider": provider, "llm.system": system,
+         "llm.invocation_parameters": json.dumps(params),
          f"{m}.role": "user"}
     k = 0
     with_images = os.environ.get("STANDUP_TRACE_IMAGES", "1") != "0" and enabled()
@@ -154,12 +158,19 @@ def llm_span(model_name, images, text, params):
         yield s
 
 
-def set_llm_output(s, raw, prompt_tokens, completion_tokens):
-    set_output(s, raw, **{"llm.output_messages.0.message.role": "assistant",
-                          "llm.output_messages.0.message.content": raw,
-                          "llm.token_count.prompt": int(prompt_tokens),
-                          "llm.token_count.completion": int(completion_tokens),
-                          "llm.token_count.total": int(prompt_tokens) + int(completion_tokens)})
+def set_llm_output(s, raw, prompt_tokens, completion_tokens, reasoning=None):
+    """`reasoning`: the model's (summarized) thinking, shown in Arize as a reasoning part before the answer."""
+    m = "llm.output_messages.0.message"
+    a = {f"{m}.role": "assistant", f"{m}.content": raw,
+         "llm.token_count.prompt": int(prompt_tokens),
+         "llm.token_count.completion": int(completion_tokens),
+         "llm.token_count.total": int(prompt_tokens) + int(completion_tokens)}
+    if reasoning:
+        a.update({f"{m}.contents.0.message_content.type": "reasoning",
+                  f"{m}.contents.0.message_content.text": reasoning,
+                  f"{m}.contents.1.message_content.type": "text",
+                  f"{m}.contents.1.message_content.text": raw})
+    set_output(s, raw, **a)
 
 
 def inject():
